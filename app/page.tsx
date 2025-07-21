@@ -11,11 +11,11 @@ export default function Home() {
   }
 
   const handleRepoInstall = () => {
-    window.location.href = "openstreamrepo://raw.githubusercontent.com/OpenStream-Official/OpenStream-Repository/master/repo.json"
+    window.location.href = "cloudstreamrepo://raw.githubusercontent.com/nehalDIU/nehal-CloudStream/master/repo.json"
   }
 
   const copyRepoUrl = () => {
-    navigator.clipboard.writeText("https://raw.githubusercontent.com/OpenStream-Official/OpenStream-Repository/master/repo.json")
+    navigator.clipboard.writeText("https://raw.githubusercontent.com/nehalDIU/nehal-CloudStream/builds/plugins.json")
   }
 
   return (
