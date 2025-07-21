@@ -1,30 +1,74 @@
-# Direct Install Guide
+# OpenStream Landing Page
 
-*Automatically synced with your [v0.dev](https://v0.dev) deployments*
+**All In One Streaming Hub - Access unlimited movies, series, and anime**
 
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/ewrs-projects-b980efd9/v0-direct-install-guide)
-[![Built with v0](https://img.shields.io/badge/Built%20with-v0.dev-black?style=for-the-badge)](https://v0.dev/chat/projects/wj6wGGY3NgV)
+[![Built with Next.js](https://img.shields.io/badge/Built%20with-Next.js-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
+[![Powered by React](https://img.shields.io/badge/Powered%20by-React-blue?style=for-the-badge&logo=react)](https://reactjs.org/)
+[![Styled with Tailwind](https://img.shields.io/badge/Styled%20with-Tailwind%20CSS-38B2AC?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
 
 ## Overview
 
-This repository will stay in sync with your deployed chats on [v0.dev](https://v0.dev).
-Any changes you make to your deployed app will be automatically pushed to this repository from [v0.dev](https://v0.dev).
+OpenStream is your ultimate destination for unlimited movies, series, and anime streaming. Access premium content from top OTT platforms like Netflix, Prime Video, Disney+ and high-speed BDix servers - completely free with no ads and HD quality.
 
-## Deployment
+## Features
 
-Your project is live at:
+- 🎬 **Unlimited Content**: Access movies, TV series, anime, and live TV
+- 🚫 **Ad-Free Experience**: Enjoy uninterrupted streaming without advertisements
+- 🔥 **HD Quality**: Stream in 4K, 1080p, 720p, and 480p quality
+- ⚡ **Fast Servers**: Multiple high-speed servers for buffer-free streaming
+- 📱 **Multi-Platform**: Android devices, Android TV, and Chromecast support
+- 💾 **Offline Download**: Download content for offline viewing
+- 🌐 **Global Access**: Available worldwide with 24/7 service
 
-**[https://vercel.com/ewrs-projects-b980efd9/v0-direct-install-guide](https://vercel.com/ewrs-projects-b980efd9/v0-direct-install-guide)**
+## Supported Platforms
 
-## Build your app
+### OTT Platforms
+- Netflix
+- Prime Video
+- Disney+
+- Hulu
+- MovieBox
 
-Continue building your app on:
+### BDix Servers
+- ICC FTP
+- DFlix FTP
+- Circle FTP
 
-**[https://v0.dev/chat/projects/wj6wGGY3NgV](https://v0.dev/chat/projects/wj6wGGY3NgV)**
+### Anime Servers
+- HiAnime
+- 9Anime
 
-## How It Works
+## Getting Started
 
-1. Create and modify your project using [v0.dev](https://v0.dev)
-2. Deploy your chats from the v0 interface
-3. Changes are automatically pushed to this repository
-4. Vercel deploys the latest version from this repository
+1. **Download the App**: Get the latest CloudStream APK
+2. **Install**: Enable "Unknown Sources" and install the APK
+3. **Connect Server**: Use our one-click server connection
+4. **Start Streaming**: Enjoy unlimited content
+
+## Tech Stack
+
+- **Framework**: Next.js 15
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **UI Components**: Radix UI
+- **Icons**: Lucide React
+
+## Development
+
+```bash
+# Install dependencies
+npm install
+
+# Run development server
+npm run dev
+
+# Build for production
+npm run build
+
+# Start production server
+npm start
+```
+
+## License
+
+This project is for educational purposes only. Please respect content creators and use legal streaming services when available.
