@@ -119,52 +119,52 @@ export default function Home() {
 
               {/* Right Content - Feature Cards */}
               <div className="space-y-6">
-                <Card className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl border-white/20 hover:from-white/15 hover:to-white/10 transition-all duration-300">
-                  <CardContent className="p-8">
+                <Card className="bg-white/10 backdrop-blur-lg border border-white/30 hover:border-white/50 transition-all duration-300 rounded-2xl overflow-hidden">
+                  <CardContent className="p-6">
                     <div className="flex items-center gap-4 mb-4">
                       <div className="w-12 h-12 bg-gradient-to-r from-red-500 to-pink-500 rounded-full flex items-center justify-center">
                         <Shield className="h-6 w-6 text-white" />
                       </div>
                       <div>
                         <h3 className="text-xl font-bold text-white">Premium Servers</h3>
-                        <p className="text-gray-300 text-sm">Netflix • Prime • Disney+ • Hulu</p>
+                        <p className="text-gray-200 text-sm">Netflix • Prime • Disney+ • Hulu</p>
                       </div>
                     </div>
-                    <p className="text-gray-200 text-sm">
+                    <p className="text-gray-100 text-sm leading-relaxed">
                       Access content from major OTT platforms with high-quality streaming and fast loading times.
                     </p>
                   </CardContent>
                 </Card>
 
-                <Card className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl border-white/20 hover:from-white/15 hover:to-white/10 transition-all duration-300">
-                  <CardContent className="p-8">
+                <Card className="bg-white/10 backdrop-blur-lg border border-white/30 hover:border-white/50 transition-all duration-300 rounded-2xl overflow-hidden">
+                  <CardContent className="p-6">
                     <div className="flex items-center gap-4 mb-4">
                       <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full flex items-center justify-center">
                         <Zap className="h-6 w-6 text-white" />
                       </div>
                       <div>
                         <h3 className="text-xl font-bold text-white">BDix Servers</h3>
-                        <p className="text-gray-300 text-sm">ICC FTP • DFlix FTP • Local Servers</p>
+                        <p className="text-gray-200 text-sm">ICC FTP • DFlix FTP • Local Servers</p>
                       </div>
                     </div>
-                    <p className="text-gray-200 text-sm">
+                    <p className="text-gray-100 text-sm leading-relaxed">
                       Lightning-fast local servers for seamless streaming with minimal buffering and data usage.
                     </p>
                   </CardContent>
                 </Card>
 
-                <Card className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl border-white/20 hover:from-white/15 hover:to-white/10 transition-all duration-300">
-                  <CardContent className="p-8">
+                <Card className="bg-white/10 backdrop-blur-lg border border-white/30 hover:border-white/50 transition-all duration-300 rounded-2xl overflow-hidden">
+                  <CardContent className="p-6">
                     <div className="flex items-center gap-4 mb-4">
                       <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center">
                         <Star className="h-6 w-6 text-white" />
                       </div>
                       <div>
                         <h3 className="text-xl font-bold text-white">Zero Cost</h3>
-                        <p className="text-gray-300 text-sm">Free Forever • No Subscriptions</p>
+                        <p className="text-gray-200 text-sm">Free Forever • No Subscriptions</p>
                       </div>
                     </div>
-                    <p className="text-gray-200 text-sm">
+                    <p className="text-gray-100 text-sm leading-relaxed">
                       Enjoy unlimited entertainment without any subscription fees, ads, or hidden charges.
                     </p>
                   </CardContent>
@@ -444,35 +444,35 @@ export default function Home() {
             </div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <Card className="bg-gray-800/50 border-gray-700 backdrop-blur-sm hover:bg-gray-800/70 transition-all duration-300">
+              <Card className="bg-white/10 backdrop-blur-lg border border-white/30 hover:border-white/50 transition-all duration-300 rounded-2xl overflow-hidden group">
                 <CardContent className="p-8 text-center">
-                  <Star className="h-12 w-12 text-yellow-400 mx-auto mb-4" />
+                  <Star className="h-12 w-12 text-yellow-400 mx-auto mb-4 group-hover:scale-110 transition-transform duration-300" />
                   <h3 className="text-lg font-semibold text-white mb-3">4K Quality</h3>
-                  <p className="text-gray-300 text-sm">Ultra HD streaming with crystal clear picture quality</p>
+                  <p className="text-gray-100 text-sm leading-relaxed">Ultra HD streaming with crystal clear picture quality</p>
                 </CardContent>
               </Card>
 
-              <Card className="bg-gray-800/50 border-gray-700 backdrop-blur-sm hover:bg-gray-800/70 transition-all duration-300">
+              <Card className="bg-white/10 backdrop-blur-lg border border-white/30 hover:border-white/50 transition-all duration-300 rounded-2xl overflow-hidden group">
                 <CardContent className="p-8 text-center">
-                  <Zap className="h-12 w-12 text-blue-400 mx-auto mb-4" />
+                  <Zap className="h-12 w-12 text-blue-400 mx-auto mb-4 group-hover:scale-110 transition-transform duration-300" />
                   <h3 className="text-lg font-semibold text-white mb-3">Fast Servers</h3>
-                  <p className="text-gray-300 text-sm">Multiple high-speed servers for buffer-free streaming</p>
+                  <p className="text-gray-100 text-sm leading-relaxed">Multiple high-speed servers for buffer-free streaming</p>
                 </CardContent>
               </Card>
 
-              <Card className="bg-gray-800/50 border-gray-700 backdrop-blur-sm hover:bg-gray-800/70 transition-all duration-300">
+              <Card className="bg-white/10 backdrop-blur-lg border border-white/30 hover:border-white/50 transition-all duration-300 rounded-2xl overflow-hidden group">
                 <CardContent className="p-8 text-center">
-                  <Download className="h-12 w-12 text-green-400 mx-auto mb-4" />
+                  <Download className="h-12 w-12 text-green-400 mx-auto mb-4 group-hover:scale-110 transition-transform duration-300" />
                   <h3 className="text-lg font-semibold text-white mb-3">Offline Download</h3>
-                  <p className="text-gray-300 text-sm">Download content for offline viewing anytime</p>
+                  <p className="text-gray-100 text-sm leading-relaxed">Download content for offline viewing anytime</p>
                 </CardContent>
               </Card>
 
-              <Card className="bg-gray-800/50 border-gray-700 backdrop-blur-sm hover:bg-gray-800/70 transition-all duration-300">
+              <Card className="bg-white/10 backdrop-blur-lg border border-white/30 hover:border-white/50 transition-all duration-300 rounded-2xl overflow-hidden group">
                 <CardContent className="p-8 text-center">
-                  <Shield className="h-12 w-12 text-purple-400 mx-auto mb-4" />
+                  <Shield className="h-12 w-12 text-purple-400 mx-auto mb-4 group-hover:scale-110 transition-transform duration-300" />
                   <h3 className="text-lg font-semibold text-white mb-3">Ad-Free</h3>
-                  <p className="text-gray-300 text-sm">Enjoy uninterrupted streaming without any advertisements</p>
+                  <p className="text-gray-100 text-sm leading-relaxed">Enjoy uninterrupted streaming without any advertisements</p>
                 </CardContent>
               </Card>
             </div>
@@ -1097,30 +1097,6 @@ export default function Home() {
                     All Systems Operational
                   </div>
                   <div className="text-gray-400 text-sm">v4.5.2</div>
-                </div>
-              </div>
-
-              {/* Additional Info */}
-              <div className="mt-6 pt-6 border-t border-gray-800">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center md:text-left">
-                  <div>
-                    <h5 className="text-white font-medium mb-2">Open Source</h5>
-                    <p className="text-gray-400 text-sm">
-                      CloudStream is open source and community-driven. Contribute on GitHub.
-                    </p>
-                  </div>
-                  <div>
-                    <h5 className="text-white font-medium mb-2">Free Forever</h5>
-                    <p className="text-gray-400 text-sm">
-                      No subscriptions, no ads, no hidden fees. Always free for everyone.
-                    </p>
-                  </div>
-                  <div>
-                    <h5 className="text-white font-medium mb-2">Global Community</h5>
-                    <p className="text-gray-400 text-sm">
-                      Join thousands of users worldwide enjoying unlimited streaming.
-                    </p>
-                  </div>
                 </div>
               </div>
             </div>
