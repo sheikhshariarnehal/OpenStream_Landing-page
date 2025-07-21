@@ -1,0 +1,26 @@
+{
+  "name": "OpenStream - All In One Streaming Hub",
+  "short_name": "OpenStream",
+  "description": "Access unlimited movies, series, and anime from top OTT servers like Netflix, Prime Video, Disney+ and premium BDix servers. Totally free, no ads, HD quality streaming.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#dc2626",
+  "orientation": "portrait-primary",
+  "categories": ["entertainment", "multimedia"],
+  "lang": "en",
+  "icons": [
+    {
+      "src": "/placeholder-logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/placeholder-logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
