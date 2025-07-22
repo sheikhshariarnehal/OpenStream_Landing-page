@@ -1,37 +1,117 @@
 "use client"
 
-import { Download, Zap, Shield, Star, Play, Tv, Film, Gamepad2 } from "lucide-react"
+import { Download, Zap, Shield, Star, Play, Tv, Film, Gamepad2, CheckCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import Image from "next/image"
+import { useState } from "react"
 
 export default function Home() {
-  const handleAppDownload = () => {
-    window.open("https://cloudstream-apk.com/wp-content/uploads/2025/04/4.5.2_(cloudstream-apk.com).apk", "_blank")
+  const [downloadLoading, setDownloadLoading] = useState(false)
+  const [connectLoading, setConnectLoading] = useState(false)
+  const [downloadSuccess, setDownloadSuccess] = useState(false)
+  const [connectSuccess, setConnectSuccess] = useState(false)
+
+  const handleAppDownload = async () => {
+    setDownloadLoading(true)
+
+    // Simulate download initiation
+    setTimeout(() => {
+      setDownloadLoading(false)
+      setDownloadSuccess(true)
+      window.open("https://cloudstream-apk.com/wp-content/uploads/2025/04/4.5.2_(cloudstream-apk.com).apk", "_blank")
+
+      // Reset success state after 3 seconds
+      setTimeout(() => {
+        setDownloadSuccess(false)
+      }, 3000)
+    }, 1500)
   }
 
-  const handleRepoInstall = () => {
-    window.location.href = "cloudstreamrepo://raw.githubusercontent.com/nehalDIU/nehal-CloudStream/master/repo.json"
+  const handleRepoInstall = async () => {
+    setConnectLoading(true)
+
+    // Simulate connection process
+    setTimeout(() => {
+      setConnectLoading(false)
+      setConnectSuccess(true)
+      window.location.href = "cloudstreamrepo://raw.githubusercontent.com/nehalDIU/nehal-CloudStream/master/repo.json"
+
+      // Reset success state after 3 seconds
+      setTimeout(() => {
+        setConnectSuccess(false)
+      }, 3000)
+    }, 2000)
   }
 
   const copyRepoUrl = () => {
     navigator.clipboard.writeText("https://raw.githubusercontent.com/nehalDIU/nehal-CloudStream/builds/plugins.json")
   }
 
+  const scrollToSection = (sectionId: string) => {
+    document.querySelector(`#${sectionId}`)?.scrollIntoView({ behavior: "smooth" })
+  }
+
+  const openExternalLink = (url: string) => {
+    window.open(url, "_blank")
+  }
+
+  const handleNewsletterSubmit = (email: string) => {
+    if (email) {
+      alert("Thank you for subscribing! We'll keep you updated.")
+      return true
+    }
+    return false
+  }
   return (
-    <div className="min-h-screen bg-black">
-      {/* Hero Section with Background */}
-      <section className="relative min-h-screen overflow-hidden">
-        {/* Background Image with Overlay */}
-        <div className="absolute inset-0">
-          <img
-            src="https://assets.nflxext.com/ffe/siteui/vlv3/a927b1ee-784d-494a-aa80-cf7a062d2523/web/BD-en-20250714-TRIFECTA-perspective_90a16610-d777-44e5-b344-bf7bfac84bd9_large.jpg"
-            alt="Netflix Style Streaming Background"
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/70 to-black/50"></div>
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
-        </div>
+    <>
+      {/* Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            "name": "OpenStream",
+            "applicationCategory": "MultimediaApplication",
+            "operatingSystem": "Android",
+            "description": "Free streaming app for movies, TV shows, and anime with access to Netflix, Prime Video, Disney+ and premium BDix servers",
+            "offers": {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "USD"
+            },
+            "aggregateRating": {
+              "@type": "AggregateRating",
+              "ratingValue": "4.8",
+              "ratingCount": "15000"
+            },
+            "author": {
+              "@type": "Organization",
+              "name": "OpenStream Team"
+            }
+          })
+        }}
+      />
+
+      <div className="min-h-screen bg-black">
+            {/* Hero Section with Background */}
+          <section className="relative min-h-screen overflow-hidden">
+            {/* Background Image with Overlay */}
+            <div className="absolute inset-0">
+              <Image
+                src="https://assets.nflxext.com/ffe/siteui/vlv3/a927b1ee-784d-494a-aa80-cf7a062d2523/web/BD-en-20250714-TRIFECTA-perspective_90a16610-d777-44e5-b344-bf7bfac84bd9_large.jpg"
+                alt="Premium streaming platform background showcasing movie and TV show content"
+                fill
+                className="object-cover"
+                priority
+                sizes="100vw"
+                quality={85}
+              />
+              <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/70 to-black/50"></div>
+              <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+            </div>
 
         {/* Hero Content */}
         <div className="relative z-10 container mx-auto px-4 py-20 lg:py-32">
@@ -99,20 +179,88 @@ export default function Home() {
                 <div className="flex flex-col sm:flex-row gap-4">
                   <Button
                     onClick={handleAppDownload}
+                    disabled={downloadLoading}
                     size="lg"
-                    className="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white px-8 py-4 text-lg font-semibold shadow-2xl shadow-red-500/25"
+                    className={`
+                      relative overflow-hidden group
+                      bg-gradient-to-r from-red-600 to-red-700
+                      hover:from-red-700 hover:to-red-800
+                      text-white px-8 py-4 text-lg font-semibold
+                      shadow-2xl shadow-red-500/25
+                      transform transition-all duration-300 ease-out
+                      hover:scale-105 hover:shadow-3xl hover:shadow-red-500/40
+                      active:scale-95
+                      ${downloadLoading ? 'animate-pulse' : ''}
+                      ${downloadSuccess ? 'bg-gradient-to-r from-green-600 to-green-700' : ''}
+                    `}
                   >
-                    <Download className="mr-3 h-6 w-6" />
-                    Download App
+                    {/* Animated background effect */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-red-400 to-red-500 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
+
+                    {/* Ripple effect */}
+                    <div className="absolute inset-0 bg-white opacity-0 group-active:opacity-20 group-active:animate-ping rounded-lg"></div>
+
+                    {/* Icon with animation */}
+                    <div className={`mr-3 transition-transform duration-300 ${downloadLoading ? 'animate-spin' : 'group-hover:animate-bounce'}`}>
+                      {downloadLoading ? (
+                        <div className="h-6 w-6 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                      ) : downloadSuccess ? (
+                        <CheckCircle className="h-6 w-6 animate-pulse" />
+                      ) : (
+                        <Download className="h-6 w-6" />
+                      )}
+                    </div>
+
+                    {/* Text with animation */}
+                    <span className="relative z-10 transition-all duration-300 group-hover:tracking-wide">
+                      {downloadLoading ? 'Preparing Download...' : downloadSuccess ? 'Download Started!' : 'Download App'}
+                    </span>
+
+                    {/* Shine effect */}
+                    <div className="absolute top-0 -left-full h-full w-1/2 bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12 group-hover:animate-shine"></div>
                   </Button>
 
                   <Button
                     onClick={handleRepoInstall}
+                    disabled={connectLoading}
                     size="lg"
-                    className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white px-8 py-4 text-lg font-semibold shadow-2xl shadow-purple-500/25"
+                    className={`
+                      relative overflow-hidden group
+                      bg-gradient-to-r from-purple-600 to-blue-600
+                      hover:from-purple-700 hover:to-blue-700
+                      text-white px-8 py-4 text-lg font-semibold
+                      shadow-2xl shadow-purple-500/25
+                      transform transition-all duration-300 ease-out
+                      hover:scale-105 hover:shadow-3xl hover:shadow-purple-500/40
+                      active:scale-95
+                      ${connectLoading ? 'animate-pulse' : ''}
+                      ${connectSuccess ? 'bg-gradient-to-r from-green-600 to-green-700' : ''}
+                    `}
                   >
-                    <Zap className="mr-3 h-6 w-6" />
-                    Connect Server
+                    {/* Animated background effect */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-purple-400 to-blue-400 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
+
+                    {/* Ripple effect */}
+                    <div className="absolute inset-0 bg-white opacity-0 group-active:opacity-20 group-active:animate-ping rounded-lg"></div>
+
+                    {/* Icon with animation */}
+                    <div className={`mr-3 transition-transform duration-300 ${connectLoading ? 'animate-pulse' : 'group-hover:animate-pulse'}`}>
+                      {connectLoading ? (
+                        <div className="h-6 w-6 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                      ) : connectSuccess ? (
+                        <CheckCircle className="h-6 w-6 animate-pulse" />
+                      ) : (
+                        <Zap className="h-6 w-6" />
+                      )}
+                    </div>
+
+                    {/* Text with animation */}
+                    <span className="relative z-10 transition-all duration-300 group-hover:tracking-wide">
+                      {connectLoading ? 'Connecting...' : connectSuccess ? 'Connected!' : 'Connect Server'}
+                    </span>
+
+                    {/* Shine effect */}
+                    <div className="absolute top-0 -left-full h-full w-1/2 bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12 group-hover:animate-shine"></div>
                   </Button>
                 </div>
               </div>
@@ -211,9 +359,28 @@ export default function Home() {
                   </p>
                   <Button
                     onClick={handleAppDownload}
-                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3"
+                    disabled={downloadLoading}
+                    className={`
+                      w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3
+                      transform transition-all duration-300 ease-out
+                      hover:scale-105 hover:shadow-lg
+                      active:scale-95
+                      ${downloadLoading ? 'animate-pulse' : ''}
+                      ${downloadSuccess ? 'bg-green-600 hover:bg-green-700' : ''}
+                    `}
                   >
-                    Download APK (Latest)
+                    <div className="flex items-center justify-center">
+                      <div className={`mr-2 transition-transform duration-300 ${downloadLoading ? 'animate-spin' : ''}`}>
+                        {downloadLoading ? (
+                          <div className="h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                        ) : downloadSuccess ? (
+                          <CheckCircle className="h-4 w-4" />
+                        ) : (
+                          <Download className="h-4 w-4" />
+                        )}
+                      </div>
+                      {downloadLoading ? 'Preparing...' : downloadSuccess ? 'Download Started!' : 'Download APK (Latest)'}
+                    </div>
                   </Button>
                 </CardContent>
               </Card>
@@ -230,9 +397,29 @@ export default function Home() {
                   </p>
                   <Button
                     onClick={handleRepoInstall}
-                    className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-semibold py-3"
+                    disabled={connectLoading}
+                    className={`
+                      w-full bg-gradient-to-r from-purple-600 to-pink-600
+                      hover:from-purple-700 hover:to-pink-700 text-white font-semibold py-3
+                      transform transition-all duration-300 ease-out
+                      hover:scale-105 hover:shadow-lg
+                      active:scale-95
+                      ${connectLoading ? 'animate-pulse' : ''}
+                      ${connectSuccess ? 'from-green-600 to-green-700 hover:from-green-700 hover:to-green-800' : ''}
+                    `}
                   >
-                    Connect Server
+                    <div className="flex items-center justify-center">
+                      <div className={`mr-2 transition-transform duration-300 ${connectLoading ? 'animate-pulse' : ''}`}>
+                        {connectLoading ? (
+                          <div className="h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                        ) : connectSuccess ? (
+                          <CheckCircle className="h-4 w-4" />
+                        ) : (
+                          <Zap className="h-4 w-4" />
+                        )}
+                      </div>
+                      {connectLoading ? 'Connecting...' : connectSuccess ? 'Connected!' : 'Connect Server'}
+                    </div>
                   </Button>
                 </CardContent>
               </Card>
@@ -260,29 +447,32 @@ export default function Home() {
             {/* Platforms Grid */}
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
               {[
-                { name: 'Netflix', logo: '/images/Netflix.png' },
-                { name: 'Prime Video', logo: '/images/PrimeVideo.png' },
-                { name: 'Disney+', logo: '/images/DisneyPlus.png' },
-                { name: 'Hulu', logo: '/images/Hulu.png' },
-                { name: 'HBO Max', logo: '/images/HBOMax.png' },
-                { name: 'Apple TV+', logo: '/images/AppleTV.png' },
-                { name: 'Showtime', logo: '/images/Showtime.png' },
-                { name: 'ICC FTP', logo: '/images/ICCFTP.png' },
-                { name: 'DFLIX FTP', logo: '/images/DflixFTP.png' },
-                { name: 'CIRCLE FTP', logo: '/images/CIRCLEFTP.png' },
-                { name: 'HiAnime', logo: '/images/HiAnime.png' },
-                { name: 'MovieBox', logo: '/images/MovieBox.png' }
+                { name: 'Netflix', logo: '/images/Netflix.png', alt: 'Netflix streaming platform logo' },
+                { name: 'Prime Video', logo: '/images/PrimeVideo.png', alt: 'Amazon Prime Video streaming service logo' },
+                { name: 'Disney+', logo: '/images/DisneyPlus.png', alt: 'Disney Plus streaming platform logo' },
+                { name: 'Hulu', logo: '/images/Hulu.png', alt: 'Hulu streaming service logo' },
+                { name: 'HBO Max', logo: '/images/HBOMax.png', alt: 'HBO Max streaming platform logo' },
+                { name: 'Apple TV+', logo: '/images/AppleTV.png', alt: 'Apple TV Plus streaming service logo' },
+                { name: 'Showtime', logo: '/images/Showtime.png', alt: 'Showtime premium channel logo' },
+                { name: 'ICC FTP', logo: '/images/ICCFTP.png', alt: 'ICC FTP server logo for local content' },
+                { name: 'DFLIX FTP', logo: '/images/DflixFTP.png', alt: 'DFLIX FTP server logo for BDix content' },
+                { name: 'CIRCLE FTP', logo: '/images/CIRCLEFTP.png', alt: 'Circle FTP server logo for local streaming' },
+                { name: 'HiAnime', logo: '/images/HiAnime.png', alt: 'HiAnime platform logo for anime content' },
+                { name: 'MovieBox', logo: '/images/MovieBox.png', alt: 'MovieBox platform logo for movies and shows' }
               ].map((platform, index) => (
                 <div
-                  key={index}
+                  key={platform.name}
                   className="bg-gray-800 rounded-lg border border-gray-700 p-4 hover:bg-gray-750 hover:border-gray-600 transition-all duration-200 group"
                 >
                   <div className="flex flex-col items-center text-center">
-                    <div className="w-12 h-12 mb-3 flex items-center justify-center">
-                      <img
+                    <div className="w-12 h-12 mb-3 flex items-center justify-center relative">
+                      <Image
                         src={platform.logo}
-                        alt={platform.name}
-                        className="w-10 h-10 object-contain group-hover:scale-105 transition-transform duration-200"
+                        alt={platform.alt}
+                        width={40}
+                        height={40}
+                        className="object-contain group-hover:scale-105 transition-transform duration-200"
+                        loading="lazy"
                       />
                     </div>
                     <h4 className="text-white font-medium text-sm leading-tight">
@@ -479,7 +669,7 @@ export default function Home() {
                     variant="outline"
                     size="sm"
                     className="w-10 h-10 p-0 bg-gray-700 hover:bg-gray-600 text-gray-300 hover:text-white border-gray-600 rounded-full transition-colors duration-200"
-                    onClick={() => window.open("https://github.com/OpenStream-Official/OpenStream-Repository/issues", "_blank")}
+                    onClick={() => openExternalLink("https://github.com/OpenStream-Official/OpenStream-Repository/issues")}
                   >
                     <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
@@ -489,7 +679,7 @@ export default function Home() {
                     variant="ghost"
                     size="sm"
                     className="w-10 h-10 p-0 bg-gray-700 hover:bg-blue-600 text-gray-300 hover:text-white border-gray-600 rounded-full transition-colors duration-200"
-                    onClick={() => window.open("https://discord.gg/openstream", "_blank")}
+                    onClick={() => openExternalLink("https://discord.gg/openstream")}
                   >
                     <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.076.076 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419-.0190 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9460 2.4189-2.1568 2.4189Z" />
@@ -499,7 +689,7 @@ export default function Home() {
                     variant="ghost"
                     size="sm"
                     className="w-10 h-10 p-0 bg-gray-700 hover:bg-blue-500 text-gray-300 hover:text-white border-gray-600 rounded-full transition-colors duration-200"
-                    onClick={() => window.open("https://t.me/openstream", "_blank")}
+                    onClick={() => openExternalLink("https://t.me/openstream")}
                   >
                     <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-.902-.46-.902-.46" />
@@ -637,7 +827,7 @@ export default function Home() {
                   </li>
                   <li>
                     <button
-                      onClick={() => document.querySelector("#faq-section")?.scrollIntoView({ behavior: "smooth" })}
+                      onClick={() => scrollToSection("faq-section")}
                       className="text-gray-400 hover:text-white transition-colors text-sm flex items-center"
                     >
                       <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -653,9 +843,7 @@ export default function Home() {
                   </li>
                   <li>
                     <button
-                      onClick={() =>
-                        document.querySelector("#features-section")?.scrollIntoView({ behavior: "smooth" })
-                      }
+                      onClick={() => scrollToSection("features-section")}
                       className="text-gray-400 hover:text-white transition-colors text-sm flex items-center"
                     >
                       <Star className="w-4 h-4 mr-2" />
@@ -664,7 +852,7 @@ export default function Home() {
                   </li>
                   <li>
                     <button
-                      onClick={() => document.querySelector("#servers-section")?.scrollIntoView({ behavior: "smooth" })}
+                      onClick={() => scrollToSection("servers-section")}
                       className="text-gray-400 hover:text-white transition-colors text-sm flex items-center"
                     >
                       <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -789,10 +977,10 @@ export default function Home() {
                   className="space-y-3"
                   onSubmit={(e) => {
                     e.preventDefault()
-                    const email = e.target.email.value
-                    if (email) {
-                      alert("Thank you for subscribing! We'll keep you updated.")
-                      e.target.reset()
+                    const formData = new FormData(e.target as HTMLFormElement)
+                    const email = formData.get('email') as string
+                    if (handleNewsletterSubmit(email)) {
+                      (e.target as HTMLFormElement).reset()
                     }
                   }}
                 >
@@ -821,14 +1009,34 @@ export default function Home() {
                   <div className="flex flex-col space-y-2">
                     <button
                       onClick={handleAppDownload}
-                      className="flex items-center bg-gray-800 hover:bg-gray-700 rounded-lg px-3 py-2 transition-colors"
+                      disabled={downloadLoading}
+                      className={`
+                        flex items-center bg-gray-800 hover:bg-gray-700 rounded-lg px-3 py-2
+                        transition-all duration-300 ease-out
+                        hover:scale-105 hover:shadow-lg hover:shadow-green-500/20
+                        active:scale-95
+                        ${downloadLoading ? 'animate-pulse' : ''}
+                        ${downloadSuccess ? 'bg-green-700 hover:bg-green-600' : ''}
+                      `}
                     >
-                      <svg className="w-6 h-6 text-green-400 mr-3" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M17.523 15.3414c-.27-.168-.626-.168-.896 0s-.27.439 0 .606l.896-.606zm-2.746-2.909c.27.168.626.168.896 0s.27-.439 0-.606l-.896.606zm.896-1.414c.27-.168.27-.439 0-.606s-.626-.168-.896 0l.896.606zm-2.746 2.909c-.27.168-.27.439 0 .606s.626.168.896 0l-.896-.606z" />
-                      </svg>
+                      <div className={`w-6 h-6 text-green-400 mr-3 transition-transform duration-300 ${downloadLoading ? 'animate-spin' : 'hover:animate-bounce'}`}>
+                        {downloadLoading ? (
+                          <div className="w-6 h-6 border-2 border-green-400 border-t-transparent rounded-full animate-spin"></div>
+                        ) : downloadSuccess ? (
+                          <CheckCircle className="w-6 h-6" />
+                        ) : (
+                          <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M17.523 15.3414c-.27-.168-.626-.168-.896 0s-.27.439 0 .606l.896-.606zm-2.746-2.909c.27.168.626.168.896 0s.27-.439 0-.606l-.896.606zm.896-1.414c.27-.168.27-.439 0-.606s-.626-.168-.896 0l.896.606zm-2.746 2.909c-.27.168-.27.439 0 .606s.626.168.896 0l-.896-.606z" />
+                          </svg>
+                        )}
+                      </div>
                       <div className="text-left">
-                        <div className="text-xs text-gray-400">GET IT ON</div>
-                        <div className="text-sm font-semibold text-white">Android APK</div>
+                        <div className="text-xs text-gray-400">
+                          {downloadLoading ? 'PREPARING' : downloadSuccess ? 'READY' : 'GET IT ON'}
+                        </div>
+                        <div className="text-sm font-semibold text-white">
+                          {downloadLoading ? 'Please Wait...' : downloadSuccess ? 'Download Started!' : 'Android APK'}
+                        </div>
                       </div>
                     </button>
                   </div>
@@ -881,6 +1089,7 @@ export default function Home() {
           </div>
         </div>
       </footer>
-    </div>
+      </div>
+    </>
   )
 }
