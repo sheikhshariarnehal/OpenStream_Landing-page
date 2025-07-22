@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge"
 
 export default function Home() {
   const handleAppDownload = () => {
-    window.open("https://openstream-app.com/downloads/openstream-latest.apk", "_blank")
+    window.open("https://cloudstream-apk.com/wp-content/uploads/2025/04/4.5.2_(cloudstream-apk.com).apk", "_blank")
   }
 
   const handleRepoInstall = () => {
