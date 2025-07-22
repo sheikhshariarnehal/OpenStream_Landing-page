@@ -199,7 +199,7 @@ export default function Home() {
             </div>
 
             <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-              <Card className="bg-gradient-to-br from-blue-600/20 to-blue-800/20 border-blue-500/30 backdrop-blur-sm hover:from-blue-600/30 hover:to-blue-800/30 transition-all duration-300">
+              <Card className="bg-gradient-to-br from-blue-900/80 to-blue-950/80 border-blue-400/50 backdrop-blur-sm hover:from-blue-900/90 hover:to-blue-950/90 transition-all duration-300">
                 <CardContent className="p-10 text-center">
                   <div className="w-20 h-20 bg-gradient-to-r from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
                     <Download className="h-10 w-10 text-white" />
@@ -218,7 +218,7 @@ export default function Home() {
                 </CardContent>
               </Card>
 
-              <Card className="bg-gradient-to-br from-purple-600/20 to-pink-600/20 border-purple-500/30 backdrop-blur-sm hover:from-purple-600/30 hover:to-pink-600/30 transition-all duration-300">
+              <Card className="bg-gradient-to-br from-purple-900/80 to-pink-900/80 border-purple-400/50 backdrop-blur-sm hover:from-purple-900/90 hover:to-pink-900/90 transition-all duration-300">
                 <CardContent className="p-10 text-center">
                   <div className="w-20 h-20 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center mx-auto mb-6">
                     <Zap className="h-10 w-10 text-white" />
@@ -238,203 +238,71 @@ export default function Home() {
               </Card>
             </div>
 
-            {/* Server Logos */}
-            <div className="mt-16">
-              <div className="text-center mb-12">
-                <h3 className="text-2xl font-bold text-white mb-4">Supported Platforms & Servers</h3>
-                <p className="text-gray-400">Premium streaming sources and high-speed local servers</p>
-              </div>
 
-              <div id="servers-section" className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-                {/* OTT Platforms */}
-                <div className="bg-gradient-to-br from-red-600/20 to-red-700/20 backdrop-blur-sm border border-red-500/30 rounded-2xl p-6 hover:from-red-600/30 hover:to-red-700/30 transition-all duration-300 group">
+          </div>
+        </div>
+      </section>
+
+      {/* Supported Platforms & Servers Section */}
+      <section className="py-16 bg-gray-900">
+        <div className="container mx-auto px-4">
+          <div className="max-w-6xl mx-auto">
+            {/* Section Header */}
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+                Supported Platforms & Servers
+              </h2>
+              <p className="text-gray-300 text-lg max-w-2xl mx-auto">
+                Access content from leading streaming platforms and premium servers
+              </p>
+            </div>
+
+            {/* Platforms Grid */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+              {[
+                { name: 'Netflix', logo: '/images/Netflix.png' },
+                { name: 'Prime Video', logo: '/images/PrimeVideo.png' },
+                { name: 'Disney+', logo: '/images/DisneyPlus.png' },
+                { name: 'Hulu', logo: '/images/Hulu.png' },
+                { name: 'HBO Max', logo: '/images/HBOMax.png' },
+                { name: 'Apple TV+', logo: '/images/AppleTV.png' },
+                { name: 'Showtime', logo: '/images/Showtime.png' },
+                { name: 'ICC FTP', logo: '/images/ICCFTP.png' },
+                { name: 'DFLIX FTP', logo: '/images/DflixFTP.png' },
+                { name: 'CIRCLE FTP', logo: '/images/CIRCLEFTP.png' },
+                { name: 'HiAnime', logo: '/images/HiAnime.png' },
+                { name: 'MovieBox', logo: '/images/MovieBox.png' }
+              ].map((platform, index) => (
+                <div
+                  key={index}
+                  className="bg-gray-800 rounded-lg border border-gray-700 p-4 hover:bg-gray-750 hover:border-gray-600 transition-all duration-200 group"
+                >
                   <div className="flex flex-col items-center text-center">
-                    <div className="w-12 h-12 bg-red-600 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
-                      <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M5.398 0v.006c3.028 8.556 5.37 15.175 8.348 23.596 2.344.058 4.85.398 4.854.398-2.8-7.924-5.923-16.747-8.487-24zm8.489 0v9.63L18.6 22.951c-.043-7.86-.004-15.71.002-22.95zM5.398 1.05V24c1.873-.225 2.81-.312 4.715-.398v-9.22z" />
-                      </svg>
+                    <div className="w-12 h-12 mb-3 flex items-center justify-center">
+                      <img
+                        src={platform.logo}
+                        alt={platform.name}
+                        className="w-10 h-10 object-contain group-hover:scale-105 transition-transform duration-200"
+                      />
                     </div>
-                    <h4 className="text-red-300 font-bold text-sm mb-1">NETFLIX</h4>
-                    <div className="flex items-center">
-                      <div className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></div>
-                      <span className="text-xs text-gray-400">Online</span>
-                    </div>
+                    <h4 className="text-white font-medium text-sm leading-tight">
+                      {platform.name}
+                    </h4>
                   </div>
                 </div>
+              ))}
+            </div>
 
-                <div className="bg-gradient-to-br from-blue-600/20 to-blue-700/20 backdrop-blur-sm border border-blue-500/30 rounded-2xl p-6 hover:from-blue-600/30 hover:to-blue-700/30 transition-all duration-300 group">
-                  <div className="flex flex-col items-center text-center">
-                    <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
-                      <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12.008 0C5.383 0 0 5.383 0 12.008S5.383 24 12.008 24 24 18.625 24 12.008 18.625 0 12.008 0zm6.136 16.504c-.237.362-.565.557-.925.557-.349 0-.694-.186-.925-.557L12.008 9.65l-4.286 6.854c-.231.371-.576.557-.925.557-.36 0-.688-.195-.925-.557a1.052 1.052 0 0 1 .004-1.204l4.711-7.533c.463-.738 1.382-.738 1.845 0l4.711 7.533c.348.557.348 1.064.001 1.204z" />
-                      </svg>
-                    </div>
-                    <h4 className="text-blue-300 font-bold text-sm mb-1">PRIME VIDEO</h4>
-                    <div className="flex items-center">
-                      <div className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></div>
-                      <span className="text-xs text-gray-400">Online</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-gradient-to-br from-purple-600/20 to-purple-700/20 backdrop-blur-sm border border-purple-500/30 rounded-2xl p-6 hover:from-purple-600/30 hover:to-purple-700/30 transition-all duration-300 group">
-                  <div className="flex flex-col items-center text-center">
-                    <div className="w-12 h-12 bg-purple-600 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
-                      <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 6.624 5.367 11.99 11.988 11.99s11.988-5.366 11.988-11.99C24.005 5.367 18.641.001 12.017.001zM9.624 6.174l2.8 4.333-2.8 4.333H5.96l2.8-4.333L5.96 6.174h3.664zm8.393 0L15.22 10.507l2.797 4.333h-3.664l-2.8-4.333 2.8-4.333h3.664z" />
-                      </svg>
-                    </div>
-                    <h4 className="text-purple-300 font-bold text-sm mb-1">DISNEY+</h4>
-                    <div className="flex items-center">
-                      <div className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></div>
-                      <span className="text-xs text-gray-400">Online</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-gradient-to-br from-orange-600/20 to-orange-700/20 backdrop-blur-sm border border-orange-500/30 rounded-2xl p-6 hover:from-orange-600/30 hover:to-orange-700/30 transition-all duration-300 group">
-                  <div className="flex flex-col items-center text-center">
-                    <div className="w-12 h-12 bg-orange-600 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
-                      <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 2c5.52 0 10 4.48 10 10s-4.48 10-10 10S2 17.52 2 12 6.48 2 12 2z" />
-                      </svg>
-                    </div>
-                    <h4 className="text-orange-300 font-bold text-sm mb-1">HULU</h4>
-                    <div className="flex items-center">
-                      <div className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></div>
-                      <span className="text-xs text-gray-400">Online</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-gradient-to-br from-pink-600/20 to-pink-700/20 backdrop-blur-sm border border-pink-500/30 rounded-2xl p-6 hover:from-pink-600/30 hover:to-pink-700/30 transition-all duration-300 group">
-                  <div className="flex flex-col items-center text-center">
-                    <div className="w-12 h-12 bg-pink-600 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
-                      <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01"
-                        />
-                      </svg>
-                    </div>
-                    <h4 className="text-pink-300 font-bold text-sm mb-1">MOVIEBOX</h4>
-                    <div className="flex items-center">
-                      <div className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></div>
-                      <span className="text-xs text-gray-400">Online</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* BDix Servers */}
-                <div className="bg-gradient-to-br from-green-600/20 to-green-700/20 backdrop-blur-sm border border-green-500/30 rounded-2xl p-6 hover:from-green-600/30 hover:to-green-700/30 transition-all duration-300 group">
-                  <div className="flex flex-col items-center text-center">
-                    <div className="w-12 h-12 bg-green-600 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
-                      <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01"
-                        />
-                      </svg>
-                    </div>
-                    <h4 className="text-green-300 font-bold text-sm mb-1">ICC FTP</h4>
-                    <div className="flex items-center">
-                      <div className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></div>
-                      <span className="text-xs text-gray-400">Online</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-gradient-to-br from-cyan-600/20 to-cyan-700/20 backdrop-blur-sm border border-cyan-500/30 rounded-2xl p-6 hover:from-cyan-600/30 hover:to-cyan-700/30 transition-all duration-300 group">
-                  <div className="flex flex-col items-center text-center">
-                    <div className="w-12 h-12 bg-cyan-600 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
-                      <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"
-                        />
-                      </svg>
-                    </div>
-                    <h4 className="text-cyan-300 font-bold text-sm mb-1">DFLIX FTP</h4>
-                    <div className="flex items-center">
-                      <div className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></div>
-                      <span className="text-xs text-gray-400">Online</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-gradient-to-br from-indigo-600/20 to-indigo-700/20 backdrop-blur-sm border border-indigo-500/30 rounded-2xl p-6 hover:from-indigo-600/30 hover:to-indigo-700/30 transition-all duration-300 group">
-                  <div className="flex flex-col items-center text-center">
-                    <div className="w-12 h-12 bg-indigo-600 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
-                      <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"
-                        />
-                      </svg>
-                    </div>
-                    <h4 className="text-indigo-300 font-bold text-sm mb-1">CIRCLE FTP</h4>
-                    <div className="flex items-center">
-                      <div className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></div>
-                      <span className="text-xs text-gray-400">Online</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Anime Servers */}
-                <div className="bg-gradient-to-br from-violet-600/20 to-violet-700/20 backdrop-blur-sm border border-violet-500/30 rounded-2xl p-6 hover:from-violet-600/30 hover:to-violet-700/30 transition-all duration-300 group">
-                  <div className="flex flex-col items-center text-center">
-                    <div className="w-12 h-12 bg-violet-600 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
-                      <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                        />
-                      </svg>
-                    </div>
-                    <h4 className="text-violet-300 font-bold text-sm mb-1">HIANIME</h4>
-                    <div className="flex items-center">
-                      <div className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></div>
-                      <span className="text-xs text-gray-400">Online</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-gradient-to-br from-rose-600/20 to-rose-700/20 backdrop-blur-sm border border-rose-500/30 rounded-2xl p-6 hover:from-rose-600/30 hover:to-rose-700/30 transition-all duration-300 group">
-                  <div className="flex flex-col items-center text-center">
-                    <div className="w-12 h-12 bg-rose-600 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
-                      <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
-                        />
-                      </svg>
-                    </div>
-                    <h4 className="text-rose-300 font-bold text-sm mb-1">9ANIME</h4>
-                    <div className="flex items-center">
-                      <div className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></div>
-                      <span className="text-xs text-gray-400">Online</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+            {/* Additional Info */}
+            <div className="text-center mt-12">
+              <p className="text-gray-400 text-sm">
+                And many more platforms supported through our extensive server network
+              </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Features Grid */}
       <section id="features-section" className="py-20 bg-gray-900">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
@@ -481,226 +349,136 @@ export default function Home() {
       </section>
 
       {/* FAQ Section */}
-      <section id="faq-section" className="py-16 bg-white">
+      <section id="faq-section" className="py-16 bg-gray-900">
         <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto">
+          <div className="max-w-4xl mx-auto">
             {/* Header */}
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">Frequently Asked Questions</h2>
-              <p className="text-gray-600">Common questions about our streaming platform</p>
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Frequently Asked Questions</h2>
+              <p className="text-gray-300 text-lg">Common questions about our streaming platform</p>
             </div>
 
             {/* FAQ Items */}
-            <div className="space-y-4">
-              <div className="border border-gray-300 rounded">
-                <details className="group">
-                  <summary className="flex justify-between items-center p-4 cursor-pointer bg-gray-50 hover:bg-gray-100">
-                    <h3 className="font-medium text-gray-900">How do I use the direct server connection?</h3>
-                    <svg
-                      className="w-5 h-5 text-gray-600 group-open:rotate-180 transition-transform"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
-                  </summary>
-                  <div className="p-4 bg-white border-t border-gray-200">
-                    <p className="text-gray-700">
-                      Click the "Connect Server" button on our homepage. This will automatically open OpenStream and
-                      connect to our content servers. Make sure OpenStream is installed first.
-                    </p>
-                  </div>
-                </details>
-              </div>
-
-              <div className="border border-gray-300 rounded">
-                <details className="group">
-                  <summary className="flex justify-between items-center p-4 cursor-pointer bg-gray-50 hover:bg-gray-100">
-                    <h3 className="font-medium text-gray-900">What if the direct connection doesn't work?</h3>
-                    <svg
-                      className="w-5 h-5 text-gray-600 group-open:rotate-180 transition-transform"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
-                  </summary>
-                  <div className="p-4 bg-white border-t border-gray-200">
-                    <p className="text-gray-700 mb-3">
-                      You can manually add our repository URL in OpenStream settings:
-                    </p>
-                    <div className="bg-gray-100 p-3 rounded border mb-3">
-                      <code className="text-sm text-gray-800">
-                        https://raw.githubusercontent.com/OpenStream-Official/OpenStream-Repository/master/repo.json
-                      </code>
+            <div className="space-y-3">
+              {[
+                {
+                  question: "How do I use the direct server connection?",
+                  answer: "Click the \"Connect Server\" button on our homepage. This will automatically open OpenStream and connect to our content servers. Make sure OpenStream is installed first."
+                },
+                {
+                  question: "What if the direct connection doesn't work?",
+                  answer: (
+                    <div>
+                      <p className="mb-3">You can manually add our repository URL in OpenStream settings:</p>
+                      <div className="bg-gray-800 p-3 rounded border border-gray-600 mb-3">
+                        <code className="text-sm text-green-400">
+                          https://raw.githubusercontent.com/OpenStream-Official/OpenStream-Repository/master/repo.json
+                        </code>
+                      </div>
+                      <p>Go to OpenStream Settings → Extensions → Add Repository → Paste URL → Save</p>
                     </div>
-                    <p className="text-gray-700">
-                      Go to OpenStream Settings → Extensions → Add Repository → Paste URL → Save
-                    </p>
-                  </div>
-                </details>
-              </div>
-
-              <div className="border border-gray-300 rounded">
-                <details className="group">
-                  <summary className="flex justify-between items-center p-4 cursor-pointer bg-gray-50 hover:bg-gray-100">
-                    <h3 className="font-medium text-gray-900">Is this platform safe to use?</h3>
-                    <svg
-                      className="w-5 h-5 text-gray-600 group-open:rotate-180 transition-transform"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
-                  </summary>
-                  <div className="p-4 bg-white border-t border-gray-200">
-                    <p className="text-gray-700">
-                      Yes, our platform is safe. We don't host content directly - we provide access to existing servers.
-                      No personal data is collected, no ads or malware. Always download OpenStream from official
-                      sources.
-                    </p>
-                  </div>
-                </details>
-              </div>
-
-              <div className="border border-gray-300 rounded">
-                <details className="group">
-                  <summary className="flex justify-between items-center p-4 cursor-pointer bg-gray-50 hover:bg-gray-100">
-                    <h3 className="font-medium text-gray-900">Which devices are supported?</h3>
-                    <svg
-                      className="w-5 h-5 text-gray-600 group-open:rotate-180 transition-transform"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
-                  </summary>
-                  <div className="p-4 bg-white border-t border-gray-200">
-                    <p className="text-gray-700 mb-2">Supported devices:</p>
-                    <ul className="text-gray-700 ml-4">
-                      <li>• Android devices (Android 5.0+)</li>
-                      <li>• Android TV and TV boxes</li>
-                      <li>• Windows PC (via emulator)</li>
-                      <li>• Chromecast support</li>
-                    </ul>
-                    <p className="text-gray-600 text-sm mt-2">Note: iOS devices are not supported.</p>
-                  </div>
-                </details>
-              </div>
-
-              <div className="border border-gray-300 rounded">
-                <details className="group">
-                  <summary className="flex justify-between items-center p-4 cursor-pointer bg-gray-50 hover:bg-gray-100">
-                    <h3 className="font-medium text-gray-900">How often are servers updated?</h3>
-                    <svg
-                      className="w-5 h-5 text-gray-600 group-open:rotate-180 transition-transform"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
-                  </summary>
-                  <div className="p-4 bg-white border-t border-gray-200">
-                    <p className="text-gray-700 mb-2">Update schedule:</p>
-                    <ul className="text-gray-700 ml-4">
-                      <li>• Movies: 24-48 hours after release</li>
-                      <li>• TV Shows: 2-6 hours after airing</li>
-                      <li>• Anime: 1-3 hours after airing</li>
-                      <li>• Servers: Continuously monitored</li>
-                    </ul>
-                  </div>
-                </details>
-              </div>
-
-              <div className="border border-gray-300 rounded">
-                <details className="group">
-                  <summary className="flex justify-between items-center p-4 cursor-pointer bg-gray-50 hover:bg-gray-100">
-                    <h3 className="font-medium text-gray-900">Can I download content for offline viewing?</h3>
-                    <svg
-                      className="w-5 h-5 text-gray-600 group-open:rotate-180 transition-transform"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
-                  </summary>
-                  <div className="p-4 bg-white border-t border-gray-200">
-                    <p className="text-gray-700">
-                      Yes! OpenStream supports downloading movies, TV episodes, and anime for offline viewing. Choose
-                      from multiple quality options and manage downloads within the app.
-                    </p>
-                  </div>
-                </details>
-              </div>
-
-              <div className="border border-gray-300 rounded">
-                <details className="group">
-                  <summary className="flex justify-between items-center p-4 cursor-pointer bg-gray-50 hover:bg-gray-100">
-                    <h3 className="font-medium text-gray-900">What video qualities are available?</h3>
-                    <svg
-                      className="w-5 h-5 text-gray-600 group-open:rotate-180 transition-transform"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
-                  </summary>
-                  <div className="p-4 bg-white border-t border-gray-200">
-                    <p className="text-gray-700 mb-2">Available qualities:</p>
-                    <ul className="text-gray-700 ml-4">
-                      <li>• 4K Ultra HD (2160p)</li>
-                      <li>• Full HD (1080p)</li>
-                      <li>• HD (720p)</li>
-                      <li>• SD (480p)</li>
-                    </ul>
-                    <p className="text-gray-600 text-sm mt-2">Quality depends on source and internet speed.</p>
-                  </div>
-                </details>
-              </div>
-
-              <div className="border border-gray-300 rounded">
-                <details className="group">
-                  <summary className="flex justify-between items-center p-4 cursor-pointer bg-gray-50 hover:bg-gray-100">
-                    <h3 className="font-medium text-gray-900">Are subtitles available?</h3>
-                    <svg
-                      className="w-5 h-5 text-gray-600 group-open:rotate-180 transition-transform"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
-                  </summary>
-                  <div className="p-4 bg-white border-t border-gray-200">
-                    <p className="text-gray-700 mb-2">Subtitle features:</p>
-                    <ul className="text-gray-700 ml-4">
-                      <li>• Multiple languages available</li>
-                      <li>• Sub and dub versions for anime</li>
-                      <li>• Customizable appearance</li>
-                      <li>• Auto-sync functionality</li>
-                    </ul>
-                  </div>
-                </details>
-              </div>
+                  )
+                },
+                {
+                  question: "Is this platform safe to use?",
+                  answer: "Yes, our platform is safe. We don't host content directly - we provide access to existing servers. No personal data is collected, no ads or malware. Always download OpenStream from official sources."
+                },
+                {
+                  question: "Which devices are supported?",
+                  answer: (
+                    <div>
+                      <p className="mb-2">Supported devices:</p>
+                      <ul className="ml-4 space-y-1">
+                        <li>• Android devices (Android 5.0+)</li>
+                        <li>• Android TV and TV boxes</li>
+                        <li>• Windows PC (via emulator)</li>
+                        <li>• Chromecast support</li>
+                      </ul>
+                      <p className="text-gray-400 text-sm mt-2">Note: iOS devices are not supported.</p>
+                    </div>
+                  )
+                },
+                {
+                  question: "How often are servers updated?",
+                  answer: (
+                    <div>
+                      <p className="mb-2">Update schedule:</p>
+                      <ul className="ml-4 space-y-1">
+                        <li>• Movies: 24-48 hours after release</li>
+                        <li>• TV Shows: 2-6 hours after airing</li>
+                        <li>• Anime: 1-3 hours after airing</li>
+                        <li>• Servers: Continuously monitored</li>
+                      </ul>
+                    </div>
+                  )
+                },
+                {
+                  question: "Can I download content for offline viewing?",
+                  answer: "Yes! OpenStream supports downloading movies, TV episodes, and anime for offline viewing. Choose from multiple quality options and manage downloads within the app."
+                },
+                {
+                  question: "What video qualities are available?",
+                  answer: (
+                    <div>
+                      <p className="mb-2">Available qualities:</p>
+                      <ul className="ml-4 space-y-1">
+                        <li>• 4K Ultra HD (2160p)</li>
+                        <li>• Full HD (1080p)</li>
+                        <li>• HD (720p)</li>
+                        <li>• SD (480p)</li>
+                      </ul>
+                      <p className="text-gray-400 text-sm mt-2">Quality depends on source and internet speed.</p>
+                    </div>
+                  )
+                },
+                {
+                  question: "Are subtitles available?",
+                  answer: (
+                    <div>
+                      <p className="mb-2">Subtitle features:</p>
+                      <ul className="ml-4 space-y-1">
+                        <li>• Multiple languages available</li>
+                        <li>• Sub and dub versions for anime</li>
+                        <li>• Customizable appearance</li>
+                        <li>• Auto-sync functionality</li>
+                      </ul>
+                    </div>
+                  )
+                }
+              ].map((faq, index) => (
+                <div key={index} className="bg-gray-800 rounded-lg border border-gray-700">
+                  <details className="group">
+                    <summary className="flex justify-between items-center p-4 cursor-pointer hover:bg-gray-750 transition-colors duration-200">
+                      <h3 className="font-medium text-white">{faq.question}</h3>
+                      <svg
+                        className="w-5 h-5 text-gray-400 group-open:rotate-180 transition-transform duration-200"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </summary>
+                    <div className="p-4 border-t border-gray-700">
+                      <div className="text-gray-300">
+                        {typeof faq.answer === 'string' ? <p>{faq.answer}</p> : faq.answer}
+                      </div>
+                    </div>
+                  </details>
+                </div>
+              ))}
             </div>
 
             {/* Support Section */}
             <div className="mt-12 text-center">
-              <div className="border border-gray-300 rounded p-6 bg-gray-50">
-                <h3 className="font-medium text-gray-900 mb-2">Need more help?</h3>
-                <p className="text-gray-600 mb-4">Contact our support team for additional assistance.</p>
-                <div className="space-x-4">
+              <div className="bg-gray-800 border border-gray-700 rounded-lg p-6">
+                <h3 className="font-medium text-white mb-2">Need more help?</h3>
+                <p className="text-gray-300 mb-4">Contact our support team for additional assistance.</p>
+                <div className="flex justify-center space-x-4">
                   <Button
                     variant="outline"
                     size="sm"
-                    className="w-10 h-10 p-0 bg-gray-800 hover:bg-gray-700 text-gray-400 hover:text-white rounded-full"
+                    className="w-10 h-10 p-0 bg-gray-700 hover:bg-gray-600 text-gray-300 hover:text-white border-gray-600 rounded-full transition-colors duration-200"
                     onClick={() => window.open("https://github.com/OpenStream-Official/OpenStream-Repository/issues", "_blank")}
                   >
                     <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -710,7 +488,7 @@ export default function Home() {
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="w-10 h-10 p-0 bg-gray-800 hover:bg-blue-600 text-gray-400 hover:text-white rounded-full"
+                    className="w-10 h-10 p-0 bg-gray-700 hover:bg-blue-600 text-gray-300 hover:text-white border-gray-600 rounded-full transition-colors duration-200"
                     onClick={() => window.open("https://discord.gg/openstream", "_blank")}
                   >
                     <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -720,7 +498,7 @@ export default function Home() {
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="w-10 h-10 p-0 bg-gray-800 hover:bg-blue-500 text-gray-400 hover:text-white rounded-full"
+                    className="w-10 h-10 p-0 bg-gray-700 hover:bg-blue-500 text-gray-300 hover:text-white border-gray-600 rounded-full transition-colors duration-200"
                     onClick={() => window.open("https://t.me/openstream", "_blank")}
                   >
                     <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
