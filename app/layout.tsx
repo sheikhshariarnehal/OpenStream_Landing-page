@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     'download movies',
     'offline viewing'
   ],
-  authors: [{ name: 'OpenStream Team', url: 'https://openstream.app' }],
+  authors: [{ name: 'OpenStream Team', url: 'https://www.moviehub.dev' }],
   creator: 'OpenStream Team',
   publisher: 'OpenStream',
   applicationName: 'OpenStream',
@@ -74,7 +74,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://openstream.app',
+    url: 'https://www.moviehub.dev',
     siteName: 'OpenStream',
     title: 'OpenStream - Free Movies, TV Shows & Anime Streaming Hub',
     description: 'Stream unlimited content from Netflix, Prime Video, Disney+ and more. Completely free, no ads, HD quality.',

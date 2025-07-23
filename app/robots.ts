@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next'
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = 'https://openstream.app'
+  const baseUrl = 'https://www.moviehub.dev'
   
   return {
     rules: [

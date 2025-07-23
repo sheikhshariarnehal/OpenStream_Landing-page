@@ -20,7 +20,7 @@ export default function Home() {
     setTimeout(() => {
       setDownloadLoading(false)
       setDownloadSuccess(true)
-      window.open("https://cloudstream-apk.com/wp-content/uploads/2025/04/4.5.2_(cloudstream-apk.com).apk", "_blank")
+      window.open("https://github.com/nehalDIU/nehal-CloudStream/releases/download/v4.5.4/OpenStream.apk", "_blank")
 
       // Reset success state after 3 seconds
       setTimeout(() => {
