@@ -20,7 +20,7 @@ export default function Home() {
     setTimeout(() => {
       setDownloadLoading(false)
       setDownloadSuccess(true)
-      window.open("https://github.com/nehalDIU/nehal-CloudStream/releases/download/v4.5.4/OpenStream.apk", "_blank")
+      window.open("https://p-def6.pcloud.com/cfZhb9dpoZuef1ID7ZD3Pg7ZZ80jCVkZ2ZZX74ZZGXdgVZoLZazZ4YZtHZNLZC8Zm8Zp4ZGFZX8ZCYZCFZHQZ4LZSNeUMWCkmrLQ0nfedYCKK8qHzqX7/OpenStream.apk", "_blank")
 
       // Reset success state after 3 seconds
       setTimeout(() => {
