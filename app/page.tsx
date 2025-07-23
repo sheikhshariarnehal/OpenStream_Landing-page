@@ -20,7 +20,7 @@ export default function Home() {
     setTimeout(() => {
       setDownloadLoading(false)
       setDownloadSuccess(true)
-      window.open("https://p-def6.pcloud.com/cfZhb9dpoZuef1ID7ZD3Pg7ZZ80jCVkZ2ZZX74ZZGXdgVZoLZazZ4YZtHZNLZC8Zm8Zp4ZGFZX8ZCYZCFZHQZ4LZSNeUMWCkmrLQ0nfedYCKK8qHzqX7/OpenStream.apk", "_blank")
+      window.open("https://www.dropbox.com/scl/fi/4ufrqbh4u5wh6i1q9ni0k/CloudStream-4.5.4.apk?rlkey=8v9d1vxi86710iiqk1elek8ps&st=lc15nd2s&dl=1", "_blank")
 
       // Reset success state after 3 seconds
       setTimeout(() => {
