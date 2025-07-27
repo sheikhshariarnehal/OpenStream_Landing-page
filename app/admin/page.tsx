@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect, useCallback } from "react"
+import { useRealtimeData } from "@/hooks/use-realtime-data"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -62,11 +63,23 @@ interface AdminData {
 export default function AdminPage() {
   const [adminToken, setAdminToken] = useState("")
   const [isAuthenticated, setIsAuthenticated] = useState(false)
-  const [adminData, setAdminData] = useState<AdminData | null>(null)
-  const [loading, setLoading] = useState(false)
   const [showToken, setShowToken] = useState(false)
   const [activeTab, setActiveTab] = useState("overview")
-  const [refreshInterval, setRefreshInterval] = useState<NodeJS.Timeout | null>(null)
+
+  // Use the new realtime data hook
+  const {
+    data: adminData,
+    loading,
+    error,
+    generateCode,
+    revokeCode,
+    copyCode,
+    refresh: refreshData
+  } = useRealtimeData({
+    adminToken: isAuthenticated ? adminToken : "",
+    autoRefresh: isAuthenticated,
+    refreshInterval: 30000
+  })
 
   const authenticate = async () => {
     if (!adminToken.trim()) {
@@ -74,7 +87,7 @@ export default function AdminPage() {
       return
     }
 
-    setLoading(true)
+    // Test authentication by trying to fetch admin data
     try {
       const response = await fetch('/api/access-codes?action=admin', {
         headers: {
@@ -83,8 +96,6 @@ export default function AdminPage() {
       })
 
       if (response.ok) {
-        const data = await response.json()
-        setAdminData(data)
         setIsAuthenticated(true)
         toast.success("Authentication successful")
       } else {
@@ -92,105 +103,12 @@ export default function AdminPage() {
       }
     } catch (error) {
       toast.error("Authentication failed")
-    } finally {
-      setLoading(false)
     }
   }
 
-  const refreshData = useCallback(async (showToast = false) => {
-    if (!isAuthenticated) return
+  // All data management functions are now handled by the useRealtimeData hook
 
-    setLoading(true)
-    try {
-      const response = await fetch('/api/access-codes?action=admin', {
-        headers: {
-          'Authorization': `Bearer ${adminToken}`
-        }
-      })
-
-      if (response.ok) {
-        const data = await response.json()
-        setAdminData(data)
-        if (showToast) {
-          toast.success("Data refreshed successfully")
-        }
-      } else {
-        toast.error("Failed to refresh data")
-      }
-    } catch (error) {
-      toast.error("Failed to refresh data")
-    } finally {
-      setLoading(false)
-    }
-  }, [isAuthenticated, adminToken])
-
-  const generateCode = async (options: { duration: number; quantity: number; prefix?: string; autoExpire: boolean }) => {
-    setLoading(true)
-    try {
-      // For bulk generation, we'll generate multiple codes
-      const promises = Array.from({ length: options.quantity }, () =>
-        fetch('/api/access-codes', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${adminToken}`
-          },
-          body: JSON.stringify({
-            action: 'generate',
-            duration: options.duration
-          })
-        })
-      )
-
-      const responses = await Promise.all(promises)
-      const results = await Promise.all(responses.map(r => r.json()))
-
-      const successCount = responses.filter(r => r.ok).length
-      if (successCount > 0) {
-        toast.success(`Generated ${successCount} access code${successCount > 1 ? 's' : ''} successfully`)
-        await refreshData()
-      } else {
-        toast.error("Failed to generate codes")
-      }
-    } catch (error) {
-      toast.error("Failed to generate codes")
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  const revokeCode = async (code: string) => {
-    setLoading(true)
-    try {
-      const response = await fetch('/api/access-codes', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${adminToken}`
-        },
-        body: JSON.stringify({
-          action: 'revoke',
-          code
-        })
-      })
-
-      if (response.ok) {
-        toast.success(`Code ${code} revoked successfully`)
-        await refreshData()
-      } else {
-        toast.error("Failed to revoke code")
-      }
-    } catch (error) {
-      toast.error("Failed to revoke code")
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  const copyCode = (code: string) => {
-    navigator.clipboard.writeText(code)
-    toast.success("Code copied to clipboard")
-  }
+  // copyCode function is now handled by the useRealtimeData hook
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleString()
@@ -219,27 +137,13 @@ export default function AdminPage() {
     }
   }
 
-  // Auto-refresh data every 30 seconds
-  useEffect(() => {
-    if (isAuthenticated) {
-      const interval = setInterval(() => {
-        refreshData(false)
-      }, 30000)
-      setRefreshInterval(interval)
-
-      return () => {
-        clearInterval(interval)
-        setRefreshInterval(null)
-      }
-    }
-  }, [isAuthenticated, refreshData])
-
-  // Real-time updates for countdown timers
+  // Real-time updates for countdown timers (keep this for UI updates)
   useEffect(() => {
     let interval: NodeJS.Timeout
     if (isAuthenticated && adminData) {
       interval = setInterval(() => {
-        setAdminData(prev => prev ? { ...prev } : null)
+        // Force re-render to update countdown timers
+        setActiveTab(prev => prev)
       }, 1000)
     }
     return () => clearInterval(interval)

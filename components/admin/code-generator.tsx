@@ -52,6 +52,8 @@ export function CodeGenerator({ onGenerate, loading }: CodeGeneratorProps) {
 
   const handleGenerate = async () => {
     try {
+      console.log('Starting code generation with options:', { duration, quantity, prefix, autoExpire })
+
       const options: GenerateOptions = {
         duration,
         quantity,
@@ -59,29 +61,62 @@ export function CodeGenerator({ onGenerate, loading }: CodeGeneratorProps) {
         autoExpire
       }
 
-      await onGenerate(options)
-      
-      // Simulate generated codes for demo
-      const newCodes = Array.from({ length: quantity }, (_, i) => 
-        `${prefix}${Math.random().toString(36).substring(2, 10).toUpperCase()}`
-      )
-      setLastGenerated(newCodes)
-      
-      toast.success(`Generated ${quantity} access code${quantity > 1 ? 's' : ''} successfully!`)
+      // Call the parent's generate function and get the result
+      const result = await onGenerate(options)
+      console.log('Generation result:', result)
+
+      // If the parent function returns generated codes, use them
+      if (result && Array.isArray(result) && result.length > 0) {
+        console.log('Using real generated codes:', result)
+        setLastGenerated(result)
+      } else {
+        // For demo purposes, generate mock codes if no real codes returned
+        console.log('Using mock codes for demo')
+        const newCodes = Array.from({ length: quantity }, (_, i) => {
+          const randomPart = Math.random().toString(36).substring(2, 10).toUpperCase()
+          return `${prefix}${randomPart}`.substring(0, 8) // Ensure 8 characters max
+        })
+        setLastGenerated(newCodes)
+        console.log('Mock codes generated:', newCodes)
+      }
+
     } catch (error) {
+      console.error('Code generation error:', error)
       toast.error("Failed to generate access codes")
     }
   }
 
-  const copyCode = (code: string) => {
-    navigator.clipboard.writeText(code)
-    toast.success("Code copied to clipboard")
+  const copyCode = async (code: string) => {
+    try {
+      await navigator.clipboard.writeText(code)
+      toast.success("Code copied to clipboard")
+    } catch (error) {
+      // Fallback for browsers that don't support clipboard API
+      const textArea = document.createElement('textarea')
+      textArea.value = code
+      document.body.appendChild(textArea)
+      textArea.select()
+      document.execCommand('copy')
+      document.body.removeChild(textArea)
+      toast.success("Code copied to clipboard")
+    }
   }
 
-  const copyAllCodes = () => {
-    const allCodes = lastGenerated.join('\n')
-    navigator.clipboard.writeText(allCodes)
-    toast.success(`Copied ${lastGenerated.length} codes to clipboard`)
+  const copyAllCodes = async () => {
+    try {
+      const allCodes = lastGenerated.join('\n')
+      await navigator.clipboard.writeText(allCodes)
+      toast.success(`Copied ${lastGenerated.length} codes to clipboard`)
+    } catch (error) {
+      // Fallback for browsers that don't support clipboard API
+      const textArea = document.createElement('textarea')
+      textArea.value = lastGenerated.join('\n')
+      document.body.appendChild(textArea)
+      textArea.select()
+      document.execCommand('copy')
+      document.body.removeChild(textArea)
+      toast.success(`Copied ${lastGenerated.length} codes to clipboard`)
+    }
   }
 
   return (
