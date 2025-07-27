@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard Preview - OpenStream</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .animate-spin { animation: spin 1s linear infinite; }
+        .animate-pulse { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .5; } }
+        .backdrop-blur { backdrop-filter: blur(8px); }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white min-h-screen">
+    <!-- Header -->
+    <div class="bg-blue-600 text-white p-4 text-center">
+        <h1 class="text-xl font-bold">🎨 Modern Admin Dashboard Preview</h1>
+        <p class="text-sm opacity-90">Redesigned with professional UI/UX - Install Node.js and run the Next.js app for full functionality</p>
+    </div>
+
+    <div class="flex h-screen">
+        <!-- Sidebar -->
+        <div class="w-64 bg-gray-900/50 border-r border-gray-800 flex flex-col">
+            <!-- Sidebar Header -->
+            <div class="flex items-center justify-between p-4 border-b border-gray-800">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+                        <svg class="h-5 w-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.031 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h2 class="font-semibold text-white">Admin Panel</h2>
+                        <p class="text-xs text-gray-400">Access Management</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <nav class="flex-1 p-4 space-y-2">
+                <button class="w-full justify-start gap-3 h-12 bg-blue-600/20 text-blue-400 border border-blue-600/30 rounded-lg px-3 flex items-center">
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                    </svg>
+                    <span>Overview</span>
+                    <span class="ml-auto bg-gray-700 text-gray-300 px-2 py-1 rounded text-xs">3</span>
+                </button>
+                
+                <button class="w-full justify-start gap-3 h-12 text-gray-400 hover:text-white hover:bg-gray-800/50 rounded-lg px-3 flex items-center">
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"></path>
+                    </svg>
+                    <span>Access Codes</span>
+                    <span class="ml-auto bg-gray-700 text-gray-300 px-2 py-1 rounded text-xs">3</span>
+                </button>
+                
+                <button class="w-full justify-start gap-3 h-12 text-gray-400 hover:text-white hover:bg-gray-800/50 rounded-lg px-3 flex items-center">
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                    </svg>
+                    <span>Activity Logs</span>
+                    <span class="ml-auto bg-gray-700 text-gray-300 px-2 py-1 rounded text-xs">8</span>
+                </button>
+            </nav>
+
+            <!-- Quick Stats -->
+            <div class="p-4 space-y-3 border-t border-gray-800">
+                <h3 class="text-sm font-medium text-gray-400">Quick Stats</h3>
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between text-sm">
+                        <span class="text-gray-400">Active Codes</span>
+                        <span class="text-white font-medium">3</span>
+                    </div>
+                    <div class="flex items-center justify-between text-sm">
+                        <span class="text-gray-400">Total Generated</span>
+                        <span class="text-white font-medium">15</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <!-- Header -->
+            <header class="bg-gray-800/50 border-b border-gray-700 px-6 py-4">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h1 class="text-2xl font-bold text-white">Dashboard Overview</h1>
+                        <p class="text-gray-400 text-sm mt-1">Monitor system performance and recent activity</p>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <button class="border border-gray-600 text-gray-300 hover:bg-gray-700 px-3 py-2 rounded-lg text-sm flex items-center gap-2">
+                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                            </svg>
+                            Refresh
+                        </button>
+                        <div class="flex items-center gap-2 text-sm text-gray-400">
+                            <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                            Live
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content -->
+            <main class="flex-1 overflow-auto p-6 space-y-6">
+                <!-- Stats Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="bg-gradient-to-br from-blue-500/20 to-blue-600/20 border border-blue-500/30 rounded-lg p-6 hover:scale-105 transition-transform">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="text-sm font-medium text-gray-300">Active Codes</h3>
+                            <div class="h-8 w-8 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center">
+                                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.031 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="text-2xl font-bold text-white mb-1">3</div>
+                        <p class="text-xs text-gray-400 mb-2">Currently valid codes</p>
+                        <div class="flex items-center gap-1">
+                            <span class="bg-blue-600 text-white px-2 py-1 rounded text-xs">+12%</span>
+                            <span class="text-xs text-gray-500">vs last week</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-gradient-to-br from-green-500/20 to-green-600/20 border border-green-500/30 rounded-lg p-6 hover:scale-105 transition-transform">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="text-sm font-medium text-gray-300">Total Generated</h3>
+                            <div class="h-8 w-8 rounded-lg bg-green-500/20 text-green-400 flex items-center justify-center">
+                                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="text-2xl font-bold text-white mb-1">15</div>
+                        <p class="text-xs text-gray-400 mb-2">All time codes</p>
+                        <div class="flex items-center gap-1">
+                            <span class="bg-green-600 text-white px-2 py-1 rounded text-xs">+5%</span>
+                            <span class="text-xs text-gray-500">vs last week</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-gradient-to-br from-purple-500/20 to-purple-600/20 border border-purple-500/30 rounded-lg p-6 hover:scale-105 transition-transform">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="text-sm font-medium text-gray-300">Recent Activity</h3>
+                            <div class="h-8 w-8 rounded-lg bg-purple-500/20 text-purple-400 flex items-center justify-center">
+                                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="text-2xl font-bold text-white mb-1">8</div>
+                        <p class="text-xs text-gray-400 mb-2">Last 24 hours</p>
+                        <div class="flex items-center gap-1">
+                            <span class="bg-purple-600 text-white px-2 py-1 rounded text-xs">+23%</span>
+                            <span class="text-xs text-gray-500">vs last week</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-gradient-to-br from-orange-500/20 to-orange-600/20 border border-orange-500/30 rounded-lg p-6 hover:scale-105 transition-transform">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="text-sm font-medium text-gray-300">Expiring Soon</h3>
+                            <div class="h-8 w-8 rounded-lg bg-orange-500/20 text-orange-400 flex items-center justify-center">
+                                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="text-2xl font-bold text-white mb-1">2</div>
+                        <p class="text-xs text-gray-400 mb-2">Next 5 minutes</p>
+                        <div class="flex items-center gap-1">
+                            <span class="bg-red-600 text-white px-2 py-1 rounded text-xs">-8%</span>
+                            <span class="text-xs text-gray-500">vs last week</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Code Generator Preview -->
+                <div class="bg-gray-800/50 border border-gray-700 rounded-lg p-6">
+                    <div class="flex items-center gap-2 mb-4">
+                        <svg class="h-5 w-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                        <h3 class="text-lg font-semibold text-white">Generate Access Codes</h3>
+                    </div>
+                    <p class="text-gray-400 mb-6">Create new temporary access codes with custom settings</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">Expiration Duration</label>
+                            <select class="w-full bg-gray-700 border border-gray-600 text-white rounded-lg px-3 py-2">
+                                <option>10 minutes</option>
+                                <option>30 minutes</option>
+                                <option>1 hour</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">Number of Codes</label>
+                            <input type="number" value="1" min="1" max="50" class="w-full bg-gray-700 border border-gray-600 text-white rounded-lg px-3 py-2">
+                        </div>
+                    </div>
+                    
+                    <button class="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-6 py-3 rounded-lg font-medium flex items-center justify-center gap-2">
+                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                        </svg>
+                        Generate 1 Code
+                    </button>
+                </div>
+
+                <!-- Sample Data Table -->
+                <div class="bg-gray-800/50 border border-gray-700 rounded-lg p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <div>
+                            <h3 class="text-lg font-semibold text-white">Recent Access Codes</h3>
+                            <p class="text-sm text-gray-400">Latest generated access codes</p>
+                        </div>
+                        <button class="border border-gray-600 text-gray-300 hover:bg-gray-700 px-3 py-2 rounded-lg text-sm flex items-center gap-2">
+                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                            Export
+                        </button>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <div class="relative">
+                            <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                            <input type="text" placeholder="Search access codes..." class="w-full max-w-sm pl-10 bg-gray-700 border border-gray-600 text-white rounded-lg px-3 py-2">
+                        </div>
+                    </div>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm">
+                            <thead>
+                                <tr class="border-b border-gray-700">
+                                    <th class="text-left py-3 text-gray-300">Code</th>
+                                    <th class="text-left py-3 text-gray-300">Created</th>
+                                    <th class="text-left py-3 text-gray-300">Expires</th>
+                                    <th class="text-left py-3 text-gray-300">Status</th>
+                                    <th class="text-left py-3 text-gray-300">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b border-gray-700 hover:bg-gray-800/30">
+                                    <td class="py-3">
+                                        <div class="flex items-center gap-2">
+                                            <span class="font-mono text-blue-400">ABC123XY</span>
+                                            <button class="text-gray-400 hover:text-white">
+                                                <svg class="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </td>
+                                    <td class="py-3 text-gray-300">2024-01-15 14:30</td>
+                                    <td class="py-3 text-gray-300">2024-01-15 14:40</td>
+                                    <td class="py-3">
+                                        <span class="bg-green-600 text-white px-2 py-1 rounded text-xs flex items-center gap-1 w-fit">
+                                            <svg class="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                            </svg>
+                                            Active
+                                        </span>
+                                    </td>
+                                    <td class="py-3">
+                                        <button class="bg-red-600 hover:bg-red-700 text-white px-2 py-1 rounded text-xs">
+                                            Revoke
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr class="border-b border-gray-700 hover:bg-gray-800/30">
+                                    <td class="py-3">
+                                        <div class="flex items-center gap-2">
+                                            <span class="font-mono text-blue-400">DEF456ZW</span>
+                                            <button class="text-gray-400 hover:text-white">
+                                                <svg class="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </td>
+                                    <td class="py-3 text-gray-300">2024-01-15 14:25</td>
+                                    <td class="py-3 text-gray-300">2024-01-15 14:35</td>
+                                    <td class="py-3">
+                                        <span class="bg-blue-600 text-white px-2 py-1 rounded text-xs flex items-center gap-1 w-fit">
+                                            <svg class="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                            </svg>
+                                            Used
+                                        </span>
+                                    </td>
+                                    <td class="py-3">
+                                        <button class="bg-gray-600 text-gray-400 px-2 py-1 rounded text-xs cursor-not-allowed">
+                                            Revoke
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // Add some interactivity
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animate stats on load
+            const statNumbers = document.querySelectorAll('.text-2xl.font-bold');
+            statNumbers.forEach(stat => {
+                const finalValue = parseInt(stat.textContent);
+                let currentValue = 0;
+                const increment = finalValue / 20;
+                const timer = setInterval(() => {
+                    currentValue += increment;
+                    if (currentValue >= finalValue) {
+                        stat.textContent = finalValue;
+                        clearInterval(timer);
+                    } else {
+                        stat.textContent = Math.floor(currentValue);
+                    }
+                }, 50);
+            });
+        });
+    </script>
+</body>
+</html>

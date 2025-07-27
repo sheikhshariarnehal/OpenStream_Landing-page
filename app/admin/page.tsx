@@ -1,27 +1,39 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Badge } from "@/components/ui/badge"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { 
-  Shield, 
-  Plus, 
-  Trash2, 
-  RefreshCw, 
-  Clock, 
-  Users, 
+import { Separator } from "@/components/ui/separator"
+import { Sidebar } from "@/components/admin/sidebar"
+import { StatsCards } from "@/components/admin/stats-cards"
+import { DataTable } from "@/components/admin/data-table"
+import { CodeGenerator } from "@/components/admin/code-generator"
+import {
+  Shield,
+  Plus,
+  Trash2,
+  RefreshCw,
+  Clock,
+  Users,
   Activity,
   AlertCircle,
   CheckCircle,
   Copy,
   Eye,
-  EyeOff
+  EyeOff,
+  Timer,
+  TrendingUp,
+  Download,
+  Search,
+  Filter,
+  MoreHorizontal,
+  Settings,
+  Bell,
+  User
 } from "lucide-react"
 import { toast } from "sonner"
 
@@ -52,8 +64,9 @@ export default function AdminPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [adminData, setAdminData] = useState<AdminData | null>(null)
   const [loading, setLoading] = useState(false)
-  const [newCodeDuration, setNewCodeDuration] = useState(10)
   const [showToken, setShowToken] = useState(false)
+  const [activeTab, setActiveTab] = useState("overview")
+  const [refreshInterval, setRefreshInterval] = useState<NodeJS.Timeout | null>(null)
 
   const authenticate = async () => {
     if (!adminToken.trim()) {
@@ -84,7 +97,7 @@ export default function AdminPage() {
     }
   }
 
-  const refreshData = async () => {
+  const refreshData = useCallback(async (showToast = false) => {
     if (!isAuthenticated) return
 
     setLoading(true)
@@ -98,6 +111,9 @@ export default function AdminPage() {
       if (response.ok) {
         const data = await response.json()
         setAdminData(data)
+        if (showToast) {
+          toast.success("Data refreshed successfully")
+        }
       } else {
         toast.error("Failed to refresh data")
       }
@@ -106,32 +122,38 @@ export default function AdminPage() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [isAuthenticated, adminToken])
 
-  const generateCode = async () => {
+  const generateCode = async (options: { duration: number; quantity: number; prefix?: string; autoExpire: boolean }) => {
     setLoading(true)
     try {
-      const response = await fetch('/api/access-codes', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${adminToken}`
-        },
-        body: JSON.stringify({
-          action: 'generate',
-          duration: newCodeDuration
+      // For bulk generation, we'll generate multiple codes
+      const promises = Array.from({ length: options.quantity }, () =>
+        fetch('/api/access-codes', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${adminToken}`
+          },
+          body: JSON.stringify({
+            action: 'generate',
+            duration: options.duration
+          })
         })
-      })
+      )
 
-      if (response.ok) {
-        const data = await response.json()
-        toast.success(`New access code generated: ${data.code}`)
+      const responses = await Promise.all(promises)
+      const results = await Promise.all(responses.map(r => r.json()))
+
+      const successCount = responses.filter(r => r.ok).length
+      if (successCount > 0) {
+        toast.success(`Generated ${successCount} access code${successCount > 1 ? 's' : ''} successfully`)
         await refreshData()
       } else {
-        toast.error("Failed to generate code")
+        toast.error("Failed to generate codes")
       }
     } catch (error) {
-      toast.error("Failed to generate code")
+      toast.error("Failed to generate codes")
     } finally {
       setLoading(false)
     }
@@ -197,11 +219,26 @@ export default function AdminPage() {
     }
   }
 
+  // Auto-refresh data every 30 seconds
+  useEffect(() => {
+    if (isAuthenticated) {
+      const interval = setInterval(() => {
+        refreshData(false)
+      }, 30000)
+      setRefreshInterval(interval)
+
+      return () => {
+        clearInterval(interval)
+        setRefreshInterval(null)
+      }
+    }
+  }, [isAuthenticated, refreshData])
+
+  // Real-time updates for countdown timers
   useEffect(() => {
     let interval: NodeJS.Timeout
     if (isAuthenticated && adminData) {
       interval = setInterval(() => {
-        // Force re-render to update time remaining
         setAdminData(prev => prev ? { ...prev } : null)
       }, 1000)
     }
@@ -210,273 +247,324 @@ export default function AdminPage() {
 
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-gray-900 flex items-center justify-center p-4">
-        <Card className="w-full max-w-md">
-          <CardHeader className="text-center">
-            <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Shield className="h-8 w-8 text-white" />
-            </div>
-            <CardTitle>Admin Authentication</CardTitle>
-            <CardDescription>
-              Enter your admin token to access the access code management dashboard
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="admin-token">Admin Token</Label>
-              <div className="relative">
-                <Input
-                  id="admin-token"
-                  type={showToken ? "text" : "password"}
-                  placeholder="Enter admin token"
-                  value={adminToken}
-                  onChange={(e) => setAdminToken(e.target.value)}
-                  onKeyPress={(e) => e.key === 'Enter' && authenticate()}
-                />
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  className="absolute right-0 top-0 h-full px-3"
-                  onClick={() => setShowToken(!showToken)}
-                >
-                  {showToken ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                </Button>
-              </div>
-            </div>
-            
-            <Alert>
-              <AlertCircle className="h-4 w-4" />
-              <AlertDescription>
-                Default token for demo: <code className="bg-gray-100 px-1 rounded">admin-secret-token-2024</code>
-              </AlertDescription>
-            </Alert>
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex items-center justify-center p-4">
+        <div className="w-full max-w-md">
+          {/* Background decoration */}
+          <div className="absolute inset-0 overflow-hidden">
+            <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl" />
+            <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl" />
+          </div>
 
-            <Button 
-              onClick={authenticate} 
-              disabled={loading || !adminToken.trim()}
-              className="w-full"
-            >
-              {loading ? "Authenticating..." : "Authenticate"}
-            </Button>
-          </CardContent>
-        </Card>
+          <Card className="relative bg-gray-800/50 border-gray-700 backdrop-blur-sm shadow-2xl">
+            <CardHeader className="text-center space-y-4">
+              <div className="w-20 h-20 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto shadow-lg">
+                <Shield className="h-10 w-10 text-white" />
+              </div>
+              <div>
+                <CardTitle className="text-2xl text-white">Admin Portal</CardTitle>
+                <CardDescription className="text-gray-400 mt-2">
+                  Secure access to the access code management system
+                </CardDescription>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="space-y-2">
+                <Label htmlFor="admin-token" className="text-gray-300">Admin Token</Label>
+                <div className="relative">
+                  <Input
+                    id="admin-token"
+                    type={showToken ? "text" : "password"}
+                    placeholder="Enter your admin token"
+                    value={adminToken}
+                    onChange={(e) => setAdminToken(e.target.value)}
+                    onKeyPress={(e) => e.key === 'Enter' && authenticate()}
+                    className="bg-gray-700/50 border-gray-600 text-white placeholder-gray-400 pr-12"
+                  />
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    className="absolute right-0 top-0 h-full px-3 text-gray-400 hover:text-white"
+                    onClick={() => setShowToken(!showToken)}
+                  >
+                    {showToken ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  </Button>
+                </div>
+              </div>
+
+              <Alert className="bg-blue-900/20 border-blue-700">
+                <AlertCircle className="h-4 w-4 text-blue-400" />
+                <AlertDescription className="text-blue-200">
+                  Demo token: <code className="bg-blue-800/30 px-2 py-1 rounded text-blue-300 font-mono">admin-secret-token-2024</code>
+                </AlertDescription>
+              </Alert>
+
+              <Button
+                onClick={authenticate}
+                disabled={loading || !adminToken.trim()}
+                className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg"
+                size="lg"
+              >
+                {loading ? (
+                  <>
+                    <div className="h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
+                    Authenticating...
+                  </>
+                ) : (
+                  <>
+                    <Shield className="h-4 w-4 mr-2" />
+                    Access Dashboard
+                  </>
+                )}
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     )
   }
 
-  return (
-    <div className="min-h-screen bg-gray-900 text-white p-4">
-      <div className="max-w-7xl mx-auto">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold flex items-center gap-2">
-              <Shield className="h-8 w-8 text-blue-500" />
-              Access Code Management
-            </h1>
-            <p className="text-gray-400 mt-2">Manage temporary access codes for server connections</p>
-          </div>
-          <Button onClick={refreshData} disabled={loading} variant="outline">
-            <RefreshCw className={`h-4 w-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
-            Refresh
+  // Prepare data for components
+  const statsData = {
+    activeCodes: adminData?.activeCodes.length || 0,
+    totalCodes: adminData?.totalCodes || 0,
+    usageLogs: adminData?.usageLogs.length || 0,
+    expiringSoon: adminData?.activeCodes.filter(code => {
+      const expiresAt = new Date(code.expiresAt)
+      const now = new Date()
+      const diff = expiresAt.getTime() - now.getTime()
+      return diff > 0 && diff < 5 * 60 * 1000 // 5 minutes
+    }).length || 0
+  }
+
+  const accessCodeColumns = [
+    {
+      key: "code",
+      label: "Code",
+      sortable: true,
+      render: (value: string) => (
+        <div className="flex items-center gap-2">
+          <span className="font-mono text-blue-400">{value}</span>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => copyCode(value)}
+            className="h-6 w-6 p-0"
+          >
+            <Copy className="h-3 w-3" />
           </Button>
         </div>
+      )
+    },
+    {
+      key: "createdAt",
+      label: "Created",
+      sortable: true,
+      render: (value: string) => formatDate(value)
+    },
+    {
+      key: "expiresAt",
+      label: "Expires",
+      sortable: true,
+      render: (value: string) => formatDate(value)
+    },
+    {
+      key: "timeRemaining",
+      label: "Time Left",
+      render: (_: any, row: any) => (
+        <Badge variant={new Date(row.expiresAt) > new Date() ? "default" : "destructive"}>
+          {getTimeRemaining(row.expiresAt)}
+        </Badge>
+      )
+    },
+    {
+      key: "status",
+      label: "Status",
+      render: (_: any, row: any) => (
+        row.usedAt ? (
+          <Badge variant="secondary">
+            <CheckCircle className="h-3 w-3 mr-1" />
+            Used
+          </Badge>
+        ) : (
+          <Badge variant="default">
+            <Clock className="h-3 w-3 mr-1" />
+            Active
+          </Badge>
+        )
+      )
+    }
+  ]
 
-        <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="codes">Active Codes</TabsTrigger>
-            <TabsTrigger value="logs">Usage Logs</TabsTrigger>
-          </TabsList>
+  const logColumns = [
+    {
+      key: "code",
+      label: "Code",
+      render: (value: string) => <span className="font-mono text-blue-400">{value}</span>
+    },
+    {
+      key: "action",
+      label: "Action",
+      render: (value: string) => (
+        <Badge variant={getActionBadgeVariant(value)}>
+          {value.charAt(0).toUpperCase() + value.slice(1)}
+        </Badge>
+      )
+    },
+    {
+      key: "timestamp",
+      label: "Timestamp",
+      sortable: true,
+      render: (value: string) => formatDate(value)
+    },
+    {
+      key: "details",
+      label: "Details",
+      render: (value: string) => (
+        <span className="text-gray-400 text-sm">{value || '-'}</span>
+      )
+    }
+  ]
 
-          <TabsContent value="overview" className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Active Codes</CardTitle>
-                  <Activity className="h-4 w-4 text-muted-foreground" />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">{adminData?.activeCodes.length || 0}</div>
-                  <p className="text-xs text-muted-foreground">Currently valid codes</p>
-                </CardContent>
-              </Card>
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
+      <div className="flex h-screen">
+        {/* Sidebar */}
+        <Sidebar
+          activeTab={activeTab}
+          onTabChange={setActiveTab}
+          stats={statsData}
+        />
 
-              <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Total Generated</CardTitle>
-                  <Users className="h-4 w-4 text-muted-foreground" />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">{adminData?.totalCodes || 0}</div>
-                  <p className="text-xs text-muted-foreground">All time codes</p>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Recent Activity</CardTitle>
-                  <Clock className="h-4 w-4 text-muted-foreground" />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">{adminData?.usageLogs.length || 0}</div>
-                  <p className="text-xs text-muted-foreground">Log entries</p>
-                </CardContent>
-              </Card>
-            </div>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Generate New Access Code</CardTitle>
-                <CardDescription>Create a new temporary access code with custom expiration</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex items-end gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="duration">Expiration (minutes)</Label>
-                    <Input
-                      id="duration"
-                      type="number"
-                      min="1"
-                      max="1440"
-                      value={newCodeDuration}
-                      onChange={(e) => setNewCodeDuration(parseInt(e.target.value) || 10)}
-                      className="w-32"
-                    />
-                  </div>
-                  <Button onClick={generateCode} disabled={loading}>
-                    <Plus className="h-4 w-4 mr-2" />
-                    Generate Code
-                  </Button>
+        {/* Main Content */}
+        <div className="flex-1 flex flex-col overflow-hidden">
+          {/* Header */}
+          <header className="bg-gray-800/50 border-b border-gray-700 px-6 py-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <h1 className="text-2xl font-bold text-white">
+                  {activeTab === 'overview' && 'Dashboard Overview'}
+                  {activeTab === 'codes' && 'Access Codes'}
+                  {activeTab === 'logs' && 'Activity Logs'}
+                  {activeTab === 'settings' && 'Settings'}
+                </h1>
+                <p className="text-gray-400 text-sm mt-1">
+                  {activeTab === 'overview' && 'Monitor system performance and recent activity'}
+                  {activeTab === 'codes' && 'Manage and monitor access codes'}
+                  {activeTab === 'logs' && 'View detailed activity and usage logs'}
+                  {activeTab === 'settings' && 'Configure system settings and preferences'}
+                </p>
+              </div>
+              <div className="flex items-center gap-3">
+                <Button
+                  onClick={() => refreshData(true)}
+                  disabled={loading}
+                  variant="outline"
+                  size="sm"
+                  className="border-gray-600 text-gray-300 hover:bg-gray-700"
+                >
+                  <RefreshCw className={`h-4 w-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
+                  Refresh
+                </Button>
+                <div className="flex items-center gap-2 text-sm text-gray-400">
+                  <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+                  Live
                 </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
+              </div>
+            </div>
+          </header>
 
-          <TabsContent value="codes" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Active Access Codes</CardTitle>
-                <CardDescription>Currently valid access codes and their status</CardDescription>
-              </CardHeader>
-              <CardContent>
-                {adminData?.activeCodes.length === 0 ? (
-                  <div className="text-center py-8 text-gray-400">
-                    <Shield className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                    <p>No active access codes</p>
-                    <p className="text-sm">Generate a new code to get started</p>
-                  </div>
-                ) : (
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Code</TableHead>
-                        <TableHead>Created</TableHead>
-                        <TableHead>Expires</TableHead>
-                        <TableHead>Time Remaining</TableHead>
-                        <TableHead>Status</TableHead>
-                        <TableHead>Actions</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {adminData?.activeCodes.map((accessCode) => (
-                        <TableRow key={accessCode.code}>
-                          <TableCell className="font-mono">
-                            <div className="flex items-center gap-2">
-                              {accessCode.code}
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                onClick={() => copyCode(accessCode.code)}
-                              >
-                                <Copy className="h-3 w-3" />
-                              </Button>
-                            </div>
-                          </TableCell>
-                          <TableCell>{formatDate(accessCode.createdAt)}</TableCell>
-                          <TableCell>{formatDate(accessCode.expiresAt)}</TableCell>
-                          <TableCell>
-                            <Badge variant={new Date(accessCode.expiresAt) > new Date() ? "default" : "destructive"}>
-                              {getTimeRemaining(accessCode.expiresAt)}
-                            </Badge>
-                          </TableCell>
-                          <TableCell>
-                            {accessCode.usedAt ? (
-                              <Badge variant="secondary">
-                                <CheckCircle className="h-3 w-3 mr-1" />
-                                Used
-                              </Badge>
-                            ) : (
-                              <Badge variant="default">
-                                <Clock className="h-3 w-3 mr-1" />
-                                Active
-                              </Badge>
-                            )}
-                          </TableCell>
-                          <TableCell>
-                            <Button
-                              variant="destructive"
-                              size="sm"
-                              onClick={() => revokeCode(accessCode.code)}
-                              disabled={loading}
-                            >
-                              <Trash2 className="h-3 w-3 mr-1" />
-                              Revoke
-                            </Button>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                )}
-              </CardContent>
-            </Card>
-          </TabsContent>
+          {/* Content Area */}
+          <main className="flex-1 overflow-auto p-6 space-y-6">
+            {activeTab === 'overview' && (
+              <div className="space-y-6">
+                <StatsCards data={statsData} loading={loading} />
 
-          <TabsContent value="logs" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Usage Logs</CardTitle>
-                <CardDescription>Recent activity and code usage history</CardDescription>
-              </CardHeader>
-              <CardContent>
-                {adminData?.usageLogs.length === 0 ? (
-                  <div className="text-center py-8 text-gray-400">
-                    <Activity className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                    <p>No usage logs available</p>
-                  </div>
-                ) : (
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Code</TableHead>
-                        <TableHead>Action</TableHead>
-                        <TableHead>Timestamp</TableHead>
-                        <TableHead>Details</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {adminData?.usageLogs.slice().reverse().map((log) => (
-                        <TableRow key={log.id}>
-                          <TableCell className="font-mono">{log.code}</TableCell>
-                          <TableCell>
-                            <Badge variant={getActionBadgeVariant(log.action)}>
-                              {log.action.charAt(0).toUpperCase() + log.action.slice(1)}
-                            </Badge>
-                          </TableCell>
-                          <TableCell>{formatDate(log.timestamp)}</TableCell>
-                          <TableCell className="text-sm text-gray-400">
-                            {log.details || '-'}
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                )}
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  <DataTable
+                    title="Recent Access Codes"
+                    description="Latest generated access codes"
+                    data={adminData?.activeCodes.slice(0, 5) || []}
+                    columns={accessCodeColumns.slice(0, 3)}
+                    loading={loading}
+                    searchPlaceholder="Search codes..."
+                  />
+
+                  <DataTable
+                    title="Recent Activity"
+                    description="Latest system activity"
+                    data={adminData?.usageLogs.slice(0, 5) || []}
+                    columns={logColumns.slice(0, 3)}
+                    loading={loading}
+                    searchPlaceholder="Search logs..."
+                  />
+                </div>
+              </div>
+            )}
+
+            {activeTab === 'codes' && (
+              <div className="space-y-6">
+                <CodeGenerator onGenerate={generateCode} loading={loading} />
+
+                <DataTable
+                  title="Active Access Codes"
+                  description="All currently valid access codes"
+                  data={adminData?.activeCodes || []}
+                  columns={accessCodeColumns}
+                  loading={loading}
+                  searchPlaceholder="Search access codes..."
+                  actions={[
+                    {
+                      label: "Copy",
+                      icon: Copy,
+                      onClick: (row) => copyCode(row.code),
+                      variant: "outline"
+                    },
+                    {
+                      label: "Revoke",
+                      icon: Trash2,
+                      onClick: (row) => revokeCode(row.code),
+                      variant: "destructive"
+                    }
+                  ]}
+                />
+              </div>
+            )}
+
+            {activeTab === 'logs' && (
+              <div className="space-y-6">
+                <DataTable
+                  title="Activity Logs"
+                  description="Complete history of access code activities"
+                  data={adminData?.usageLogs.slice().reverse() || []}
+                  columns={logColumns}
+                  loading={loading}
+                  searchPlaceholder="Search activity logs..."
+                />
+              </div>
+            )}
+
+            {activeTab === 'settings' && (
+              <div className="space-y-6">
+                <Card className="bg-gray-800/50 border-gray-700">
+                  <CardHeader>
+                    <CardTitle className="text-white">System Settings</CardTitle>
+                    <CardDescription className="text-gray-400">
+                      Configure system preferences and security settings
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-6">
+                    <div className="text-center py-12 text-gray-400">
+                      <Settings className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                      <p>Settings panel coming soon</p>
+                      <p className="text-sm">Advanced configuration options will be available here</p>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            )}
+          </main>
+        </div>
       </div>
     </div>
   )
