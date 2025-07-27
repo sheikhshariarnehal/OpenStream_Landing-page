@@ -4,14 +4,17 @@ import { Download, Zap, Shield, Star, Play, Tv, Film, Gamepad2, CheckCircle } fr
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { AccessCodeDialog } from "@/components/access-code-dialog"
 import Image from "next/image"
 import { useState } from "react"
+import { toast } from "sonner"
 
 export default function Home() {
   const [downloadLoading, setDownloadLoading] = useState(false)
   const [connectLoading, setConnectLoading] = useState(false)
   const [downloadSuccess, setDownloadSuccess] = useState(false)
   const [connectSuccess, setConnectSuccess] = useState(false)
+  const [showAccessCodeDialog, setShowAccessCodeDialog] = useState(false)
 
   const handleAppDownload = async () => {
     setDownloadLoading(true)
@@ -30,9 +33,15 @@ export default function Home() {
   }
 
   const handleRepoInstall = async () => {
-    setConnectLoading(true)
+    // Show access code dialog instead of direct connection
+    setShowAccessCodeDialog(true)
+  }
 
-    // Simulate connection process
+  const handleAccessCodeSuccess = async () => {
+    setConnectLoading(true)
+    toast.success("Access granted! Connecting to server...")
+
+    // Simulate connection process after successful validation
     setTimeout(() => {
       setConnectLoading(false)
       setConnectSuccess(true)
@@ -1090,6 +1099,13 @@ export default function Home() {
         </div>
       </footer>
       </div>
+
+      {/* Access Code Dialog */}
+      <AccessCodeDialog
+        open={showAccessCodeDialog}
+        onOpenChange={setShowAccessCodeDialog}
+        onSuccess={handleAccessCodeSuccess}
+      />
     </>
   )
 }
