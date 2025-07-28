@@ -4,6 +4,7 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
+import { useTheme } from "@/contexts/theme-context"
 import { 
   Shield, 
   BarChart3, 
@@ -32,6 +33,7 @@ interface SidebarProps {
 
 export function Sidebar({ activeTab, onTabChange, stats }: SidebarProps) {
   const [isCollapsed, setIsCollapsed] = useState(false)
+  const { resolvedTheme } = useTheme()
 
   const menuItems = [
     {
@@ -65,19 +67,19 @@ export function Sidebar({ activeTab, onTabChange, stats }: SidebarProps) {
 
   return (
     <div className={cn(
-      "flex flex-col h-full bg-gray-900/50 border-r border-gray-800 transition-all duration-300",
+      "flex flex-col h-full theme-bg-sidebar theme-border transition-all duration-300",
       isCollapsed ? "w-16" : "w-64"
     )}>
       {/* Header */}
-      <div className="flex items-center justify-between p-4 border-b border-gray-800">
+      <div className="flex items-center justify-between p-4 theme-border border-b">
         {!isCollapsed && (
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
               <Shield className="h-5 w-5 text-white" />
             </div>
             <div>
-              <h2 className="font-semibold text-white">Admin Panel</h2>
-              <p className="text-xs text-gray-400">Access Management</p>
+              <h2 className="font-semibold theme-text-primary">Admin Panel</h2>
+              <p className="text-xs theme-text-secondary">Access Management</p>
             </div>
           </div>
         )}
@@ -85,7 +87,7 @@ export function Sidebar({ activeTab, onTabChange, stats }: SidebarProps) {
           variant="ghost"
           size="sm"
           onClick={() => setIsCollapsed(!isCollapsed)}
-          className="text-gray-400 hover:text-white"
+          className="theme-text-secondary hover:theme-text-primary theme-transition"
         >
           {isCollapsed ? <Menu className="h-4 w-4" /> : <X className="h-4 w-4" />}
         </Button>
@@ -102,10 +104,10 @@ export function Sidebar({ activeTab, onTabChange, stats }: SidebarProps) {
               key={item.id}
               variant={isActive ? "secondary" : "ghost"}
               className={cn(
-                "w-full justify-start gap-3 h-12 transition-all duration-200",
-                isActive 
-                  ? "bg-blue-600/20 text-blue-400 border border-blue-600/30" 
-                  : "text-gray-400 hover:text-white hover:bg-gray-800/50",
+                "w-full justify-start gap-3 h-12 theme-transition",
+                isActive
+                  ? "theme-interactive-active"
+                  : "theme-text-secondary hover:theme-text-primary theme-interactive-hover",
                 isCollapsed && "justify-center"
               )}
               onClick={() => onTabChange(item.id)}

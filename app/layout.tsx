@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from 'next'
 import './globals.css'
+import '../styles/themes.css'
 import { Toaster } from "@/components/ui/sonner"
+import { ThemeProvider } from '@/contexts/theme-context'
 
 export const viewport: Viewport = {
   width: 'device-width',
@@ -8,8 +10,8 @@ export const viewport: Viewport = {
   maximumScale: 5,
   userScalable: true,
   themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#dc2626' },
-    { media: '(prefers-color-scheme: dark)', color: '#dc2626' }
+    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
+    { media: '(prefers-color-scheme: dark)', color: '#111827' }
   ]
 }
 
@@ -168,14 +170,16 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased">
-        <noscript>
-          <div style={{ padding: '20px', textAlign: 'center', backgroundColor: '#1f2937', color: 'white' }}>
-            <h1>JavaScript Required</h1>
-            <p>This application requires JavaScript to function properly. Please enable JavaScript in your browser.</p>
-          </div>
-        </noscript>
-        {children}
-        <Toaster />
+        <ThemeProvider defaultTheme="system" storageKey="admin-theme">
+          <noscript>
+            <div style={{ padding: '20px', textAlign: 'center', backgroundColor: '#1f2937', color: 'white' }}>
+              <h1>JavaScript Required</h1>
+              <p>This application requires JavaScript to function properly. Please enable JavaScript in your browser.</p>
+            </div>
+          </noscript>
+          {children}
+          <Toaster />
+        </ThemeProvider>
       </body>
     </html>
   )

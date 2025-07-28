@@ -2,6 +2,8 @@
 
 import { useState, useEffect, useCallback } from "react"
 import { useRealtimeData } from "@/hooks/use-realtime-data"
+import { useTheme } from "@/contexts/theme-context"
+import { ThemeToggle } from "@/components/theme-toggle"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -64,6 +66,7 @@ export default function AdminPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [showToken, setShowToken] = useState(false)
   const [activeTab, setActiveTab] = useState("overview")
+  const { resolvedTheme } = useTheme()
 
   // Use the new realtime data hook
   const {
@@ -150,29 +153,35 @@ export default function AdminPage() {
 
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex items-center justify-center p-4">
+      <div className="min-h-screen theme-bg-primary flex items-center justify-center p-4">
         <div className="w-full max-w-md">
           {/* Background decoration */}
           <div className="absolute inset-0 overflow-hidden">
-            <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl" />
-            <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl" />
+            <div className={`absolute -top-40 -right-40 w-80 h-80 rounded-full blur-3xl ${
+              resolvedTheme === 'dark' ? 'bg-blue-500/10' : 'bg-blue-500/8'
+            }`} />
+            <div className={`absolute -bottom-40 -left-40 w-80 h-80 rounded-full blur-3xl ${
+              resolvedTheme === 'dark' ? 'bg-purple-500/10' : 'bg-purple-500/8'
+            }`} />
           </div>
 
-          <Card className="relative bg-gray-800/50 border-gray-700 backdrop-blur-sm shadow-2xl">
+          <Card className={`relative theme-bg-card backdrop-blur-sm theme-transition ${
+            resolvedTheme === 'dark' ? 'shadow-2xl' : 'shadow-xl border'
+          }`}>
             <CardHeader className="text-center space-y-4">
               <div className="w-20 h-20 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto shadow-lg">
                 <Shield className="h-10 w-10 text-white" />
               </div>
               <div>
-                <CardTitle className="text-2xl text-white">Admin Portal</CardTitle>
-                <CardDescription className="text-gray-400 mt-2">
+                <CardTitle className="text-2xl theme-text-primary">Admin Portal</CardTitle>
+                <CardDescription className="theme-text-secondary mt-2">
                   Secure access to the access code management system
                 </CardDescription>
               </div>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="space-y-2">
-                <Label htmlFor="admin-token" className="text-gray-300">Admin Token</Label>
+                <Label htmlFor="admin-token" className="theme-text-secondary">Admin Token</Label>
                 <div className="relative">
                   <Input
                     id="admin-token"
@@ -181,13 +190,13 @@ export default function AdminPage() {
                     value={adminToken}
                     onChange={(e) => setAdminToken(e.target.value)}
                     onKeyPress={(e) => e.key === 'Enter' && authenticate()}
-                    className="bg-gray-700/50 border-gray-600 text-white placeholder-gray-400 pr-12"
+                    className="theme-input pr-12 theme-transition"
                   />
                   <Button
                     type="button"
                     variant="ghost"
                     size="sm"
-                    className="absolute right-0 top-0 h-full px-3 text-gray-400 hover:text-white"
+                    className="absolute right-0 top-0 h-full px-3 theme-text-secondary hover:theme-text-primary theme-transition"
                     onClick={() => setShowToken(!showToken)}
                   >
                     {showToken ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
@@ -195,10 +204,14 @@ export default function AdminPage() {
                 </div>
               </div>
 
-              <Alert className="bg-blue-900/20 border-blue-700">
-                <AlertCircle className="h-4 w-4 text-blue-400" />
-                <AlertDescription className="text-blue-200">
-                  Demo token: <code className="bg-blue-800/30 px-2 py-1 rounded text-blue-300 font-mono">admin-secret-token-2024</code>
+              <Alert className="theme-status-info theme-transition">
+                <AlertCircle className="h-4 w-4" />
+                <AlertDescription>
+                  Demo token: <code className={`px-2 py-1 rounded font-mono ${
+                    resolvedTheme === 'dark'
+                      ? 'bg-blue-800/30 text-blue-300'
+                      : 'bg-blue-100 text-blue-700'
+                  }`}>admin-secret-token-2024</code>
                 </AlertDescription>
               </Alert>
 
@@ -330,7 +343,7 @@ export default function AdminPage() {
   ]
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
+    <div className="min-h-screen theme-bg-primary theme-transition">
       <div className="flex h-screen">
         {/* Sidebar */}
         <Sidebar
@@ -342,16 +355,16 @@ export default function AdminPage() {
         {/* Main Content */}
         <div className="flex-1 flex flex-col overflow-hidden">
           {/* Header */}
-          <header className="bg-gray-800/50 border-b border-gray-700 px-6 py-4">
+          <header className="theme-bg-header theme-border px-6 py-4 theme-transition">
             <div className="flex items-center justify-between">
               <div>
-                <h1 className="text-2xl font-bold text-white">
+                <h1 className="text-2xl font-bold theme-text-primary">
                   {activeTab === 'overview' && 'Dashboard Overview'}
                   {activeTab === 'codes' && 'Access Codes'}
                   {activeTab === 'logs' && 'Activity Logs'}
                   {activeTab === 'settings' && 'Settings'}
                 </h1>
-                <p className="text-gray-400 text-sm mt-1">
+                <p className="theme-text-secondary text-sm mt-1">
                   {activeTab === 'overview' && 'Monitor system performance and recent activity'}
                   {activeTab === 'codes' && 'Manage and monitor access codes'}
                   {activeTab === 'logs' && 'View detailed activity and usage logs'}
@@ -359,7 +372,8 @@ export default function AdminPage() {
                 </p>
               </div>
               <div className="flex items-center gap-3">
-                <div className="flex items-center gap-2 text-sm text-gray-400">
+                <ThemeToggle variant="dropdown" size="sm" />
+                <div className="flex items-center gap-2 text-sm theme-text-secondary">
                   <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
                   Live
                 </div>
@@ -368,7 +382,9 @@ export default function AdminPage() {
           </header>
 
           {/* Content Area */}
-          <main className="flex-1 overflow-auto p-6 space-y-6">
+          <main className={`flex-1 overflow-auto p-6 space-y-6 ${
+            resolvedTheme === 'dark' ? '' : 'bg-slate-50/30'
+          }`}>
             {activeTab === 'overview' && (
               <div className="space-y-6">
                 <StatsCards data={statsData} loading={loading} />
@@ -439,15 +455,15 @@ export default function AdminPage() {
 
             {activeTab === 'settings' && (
               <div className="space-y-6">
-                <Card className="bg-gray-800/50 border-gray-700">
+                <Card className="theme-bg-card theme-transition">
                   <CardHeader>
-                    <CardTitle className="text-white">System Settings</CardTitle>
-                    <CardDescription className="text-gray-400">
+                    <CardTitle className="theme-text-primary">System Settings</CardTitle>
+                    <CardDescription className="theme-text-secondary">
                       Configure system preferences and security settings
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-6">
-                    <div className="text-center py-12 text-gray-400">
+                    <div className="text-center py-12 theme-text-secondary">
                       <Settings className="h-12 w-12 mx-auto mb-4 opacity-50" />
                       <p>Settings panel coming soon</p>
                       <p className="text-sm">Advanced configuration options will be available here</p>

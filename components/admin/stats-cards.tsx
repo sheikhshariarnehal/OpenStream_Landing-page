@@ -2,6 +2,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { useTheme } from "@/contexts/theme-context"
 import { 
   Activity, 
   Users, 
@@ -27,6 +28,7 @@ interface StatsCardsProps {
 }
 
 export function StatsCards({ data, loading }: StatsCardsProps) {
+  const { resolvedTheme } = useTheme()
   const stats = [
     {
       title: "Active Codes",
@@ -67,21 +69,27 @@ export function StatsCards({ data, loading }: StatsCardsProps) {
   ]
 
   const getColorClasses = (color: string) => {
+    const opacity = resolvedTheme === 'dark' ? '20' : '10'
+    const borderOpacity = resolvedTheme === 'dark' ? '30' : '20'
+
     const colors = {
-      blue: "from-blue-500/20 to-blue-600/20 border-blue-500/30",
-      green: "from-green-500/20 to-green-600/20 border-green-500/30",
-      purple: "from-purple-500/20 to-purple-600/20 border-purple-500/30",
-      orange: "from-orange-500/20 to-orange-600/20 border-orange-500/30"
+      blue: `from-blue-500/${opacity} to-blue-600/${opacity} border-blue-500/${borderOpacity}`,
+      green: `from-green-500/${opacity} to-green-600/${opacity} border-green-500/${borderOpacity}`,
+      purple: `from-purple-500/${opacity} to-purple-600/${opacity} border-purple-500/${borderOpacity}`,
+      orange: `from-orange-500/${opacity} to-orange-600/${opacity} border-orange-500/${borderOpacity}`
     }
     return colors[color as keyof typeof colors] || colors.blue
   }
 
   const getIconColorClasses = (color: string) => {
+    const bgOpacity = resolvedTheme === 'dark' ? '20' : '10'
+    const textShade = resolvedTheme === 'dark' ? '400' : '600'
+
     const colors = {
-      blue: "text-blue-400 bg-blue-500/20",
-      green: "text-green-400 bg-green-500/20",
-      purple: "text-purple-400 bg-purple-500/20",
-      orange: "text-orange-400 bg-orange-500/20"
+      blue: `text-blue-${textShade} bg-blue-500/${bgOpacity}`,
+      green: `text-green-${textShade} bg-green-500/${bgOpacity}`,
+      purple: `text-purple-${textShade} bg-purple-500/${bgOpacity}`,
+      orange: `text-orange-${textShade} bg-orange-500/${bgOpacity}`
     }
     return colors[color as keyof typeof colors] || colors.blue
   }
@@ -90,15 +98,25 @@ export function StatsCards({ data, loading }: StatsCardsProps) {
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {[...Array(4)].map((_, i) => (
-          <Card key={i} className="bg-gray-800/50 border-gray-700">
+          <Card key={i} className="theme-bg-card">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <div className="h-4 w-20 bg-gray-700 rounded animate-pulse" />
-              <div className="h-8 w-8 bg-gray-700 rounded-lg animate-pulse" />
+              <div className={`h-4 w-20 rounded animate-pulse ${
+                resolvedTheme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'
+              }`} />
+              <div className={`h-8 w-8 rounded-lg animate-pulse ${
+                resolvedTheme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'
+              }`} />
             </CardHeader>
             <CardContent>
-              <div className="h-8 w-16 bg-gray-700 rounded animate-pulse mb-2" />
-              <div className="h-3 w-24 bg-gray-700 rounded animate-pulse mb-2" />
-              <div className="h-3 w-16 bg-gray-700 rounded animate-pulse" />
+              <div className={`h-8 w-16 rounded animate-pulse mb-2 ${
+                resolvedTheme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'
+              }`} />
+              <div className={`h-3 w-24 rounded animate-pulse mb-2 ${
+                resolvedTheme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'
+              }`} />
+              <div className={`h-3 w-16 rounded animate-pulse ${
+                resolvedTheme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'
+              }`} />
             </CardContent>
           </Card>
         ))}
@@ -111,15 +129,16 @@ export function StatsCards({ data, loading }: StatsCardsProps) {
       {stats.map((stat, index) => {
         const Icon = stat.icon
         return (
-          <Card 
-            key={index} 
+          <Card
+            key={index}
             className={cn(
-              "bg-gradient-to-br border transition-all duration-300 hover:scale-105 hover:shadow-lg",
-              getColorClasses(stat.color)
+              "bg-gradient-to-br border theme-transition hover:scale-105",
+              getColorClasses(stat.color),
+              resolvedTheme === 'light' && "shadow-sm hover:shadow-md"
             )}
           >
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-gray-300">
+              <CardTitle className="text-sm font-medium theme-text-secondary">
                 {stat.title}
               </CardTitle>
               <div className={cn(
@@ -130,10 +149,10 @@ export function StatsCards({ data, loading }: StatsCardsProps) {
               </div>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-white mb-1">
+              <div className="text-2xl font-bold theme-text-primary mb-1">
                 {stat.value.toLocaleString()}
               </div>
-              <p className="text-xs text-gray-400 mb-2">
+              <p className="text-xs theme-text-muted mb-2">
                 {stat.description}
               </p>
               <div className="flex items-center gap-1">

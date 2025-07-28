@@ -9,10 +9,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Switch } from "@/components/ui/switch"
 import { Badge } from "@/components/ui/badge"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { 
-  Plus, 
-  Copy, 
-  Clock, 
+import { useTheme } from "@/contexts/theme-context"
+import {
+  Plus,
+  Copy,
+  Clock,
   Zap,
   Settings,
   Info,
@@ -40,6 +41,7 @@ export function CodeGenerator({ onGenerate, loading }: CodeGeneratorProps) {
   const [autoExpire, setAutoExpire] = useState(true)
   const [showAdvanced, setShowAdvanced] = useState(false)
   const [lastGenerated, setLastGenerated] = useState<string[]>([])
+  const { resolvedTheme } = useTheme()
 
   const presetDurations = [
     { label: "5 minutes", value: 5 },
@@ -121,13 +123,13 @@ export function CodeGenerator({ onGenerate, loading }: CodeGeneratorProps) {
 
   return (
     <div className="space-y-6">
-      <Card className="bg-gray-800/50 border-gray-700">
+      <Card className="theme-bg-card theme-transition">
         <CardHeader>
-          <CardTitle className="text-white flex items-center gap-2">
-            <Zap className="h-5 w-5 text-blue-400" />
+          <CardTitle className="theme-text-primary flex items-center gap-2">
+            <Zap className={`h-5 w-5 ${resolvedTheme === 'dark' ? 'text-blue-400' : 'text-blue-600'}`} />
             Generate Access Codes
           </CardTitle>
-          <CardDescription className="text-gray-400">
+          <CardDescription className="theme-text-secondary">
             Create new temporary access codes with custom settings
           </CardDescription>
         </CardHeader>
@@ -135,14 +137,16 @@ export function CodeGenerator({ onGenerate, loading }: CodeGeneratorProps) {
           {/* Basic Settings */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
-              <Label htmlFor="duration" className="text-gray-300">
+              <Label htmlFor="duration" className="theme-text-secondary">
                 Expiration Duration
               </Label>
               <Select value={duration.toString()} onValueChange={(value) => setDuration(parseInt(value))}>
-                <SelectTrigger className="bg-gray-700 border-gray-600 text-white">
+                <SelectTrigger className="theme-input theme-transition">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent className="bg-gray-800 border-gray-600">
+                <SelectContent className={`theme-bg-card theme-border ${
+                  resolvedTheme === 'dark' ? 'bg-gray-800' : 'bg-white'
+                }`}>
                   {presetDurations.map((preset) => (
                     <SelectItem key={preset.value} value={preset.value.toString()}>
                       {preset.label}
@@ -153,7 +157,7 @@ export function CodeGenerator({ onGenerate, loading }: CodeGeneratorProps) {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="quantity" className="text-gray-300">
+              <Label htmlFor="quantity" className="theme-text-secondary">
                 Number of Codes
               </Label>
               <Input
@@ -163,7 +167,7 @@ export function CodeGenerator({ onGenerate, loading }: CodeGeneratorProps) {
                 max="50"
                 value={quantity}
                 onChange={(e) => setQuantity(parseInt(e.target.value) || 1)}
-                className="bg-gray-700 border-gray-600 text-white"
+                className="theme-input theme-transition"
               />
             </div>
           </div>
@@ -171,8 +175,8 @@ export function CodeGenerator({ onGenerate, loading }: CodeGeneratorProps) {
           {/* Advanced Settings Toggle */}
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Settings className="h-4 w-4 text-gray-400" />
-              <span className="text-sm text-gray-300">Advanced Settings</span>
+              <Settings className={`h-4 w-4 ${resolvedTheme === 'dark' ? 'text-gray-400' : 'text-slate-500'}`} />
+              <span className="text-sm theme-text-secondary">Advanced Settings</span>
             </div>
             <Switch
               checked={showAdvanced}
@@ -182,9 +186,13 @@ export function CodeGenerator({ onGenerate, loading }: CodeGeneratorProps) {
 
           {/* Advanced Settings */}
           {showAdvanced && (
-            <div className="space-y-4 p-4 bg-gray-900/50 rounded-lg border border-gray-700">
+            <div className={`space-y-4 p-4 rounded-lg border theme-transition ${
+              resolvedTheme === 'dark'
+                ? 'bg-gray-900/50 border-gray-700'
+                : 'bg-slate-50 border-slate-200'
+            }`}>
               <div className="space-y-2">
-                <Label htmlFor="prefix" className="text-gray-300">
+                <Label htmlFor="prefix" className="theme-text-secondary">
                   Code Prefix (Optional)
                 </Label>
                 <Input
@@ -192,18 +200,18 @@ export function CodeGenerator({ onGenerate, loading }: CodeGeneratorProps) {
                   placeholder="e.g., VIP, TEMP, etc."
                   value={prefix}
                   onChange={(e) => setPrefix(e.target.value.toUpperCase().slice(0, 4))}
-                  className="bg-gray-700 border-gray-600 text-white"
+                  className="theme-input theme-transition"
                   maxLength={4}
                 />
-                <p className="text-xs text-gray-500">
+                <p className="text-xs theme-text-muted">
                   Optional prefix for generated codes (max 4 characters)
                 </p>
               </div>
 
               <div className="flex items-center justify-between">
                 <div className="space-y-1">
-                  <Label className="text-gray-300">Auto-expire on use</Label>
-                  <p className="text-xs text-gray-500">
+                  <Label className="theme-text-secondary">Auto-expire on use</Label>
+                  <p className="text-xs theme-text-muted">
                     Automatically deactivate codes after first use
                   </p>
                 </div>
@@ -216,11 +224,11 @@ export function CodeGenerator({ onGenerate, loading }: CodeGeneratorProps) {
           )}
 
           {/* Generation Info */}
-          <Alert className="bg-blue-900/20 border-blue-700">
-            <Info className="h-4 w-4 text-blue-400" />
-            <AlertDescription className="text-blue-200">
-              Codes will be 8 characters long and cryptographically secure. 
-              {duration < 60 ? 
+          <Alert className="theme-status-info theme-transition">
+            <Info className="h-4 w-4" />
+            <AlertDescription>
+              Codes will be 8 characters long and cryptographically secure.
+              {duration < 60 ?
                 ` They will expire in ${duration} minute${duration > 1 ? 's' : ''}.` :
                 ` They will expire in ${Math.floor(duration / 60)} hour${Math.floor(duration / 60) > 1 ? 's' : ''}.`
               }
@@ -251,10 +259,12 @@ export function CodeGenerator({ onGenerate, loading }: CodeGeneratorProps) {
 
       {/* Recently Generated Codes */}
       {lastGenerated.length > 0 && (
-        <Card className="bg-green-900/20 border-green-700">
+        <Card className="theme-status-success theme-transition">
           <CardHeader>
             <div className="flex items-center justify-between">
-              <CardTitle className="text-green-400 flex items-center gap-2">
+              <CardTitle className={`flex items-center gap-2 ${
+                resolvedTheme === 'dark' ? 'text-green-400' : 'text-green-600'
+              }`}>
                 <CheckCircle className="h-5 w-5" />
                 Recently Generated
               </CardTitle>
@@ -262,13 +272,17 @@ export function CodeGenerator({ onGenerate, loading }: CodeGeneratorProps) {
                 variant="outline"
                 size="sm"
                 onClick={copyAllCodes}
-                className="border-green-600 text-green-400 hover:bg-green-900/30"
+                className={`theme-transition ${
+                  resolvedTheme === 'dark'
+                    ? 'border-green-600 text-green-400 hover:bg-green-900/30'
+                    : 'border-green-500 text-green-600 hover:bg-green-50'
+                }`}
               >
                 <Copy className="h-4 w-4 mr-2" />
                 Copy All
               </Button>
             </div>
-            <CardDescription className="text-green-200">
+            <CardDescription className={resolvedTheme === 'dark' ? 'text-green-200' : 'text-green-700'}>
               {lastGenerated.length} code{lastGenerated.length > 1 ? 's' : ''} generated successfully
             </CardDescription>
           </CardHeader>
@@ -277,14 +291,18 @@ export function CodeGenerator({ onGenerate, loading }: CodeGeneratorProps) {
               {lastGenerated.map((code, index) => (
                 <div
                   key={index}
-                  className="flex items-center justify-between p-3 bg-gray-800/50 rounded-lg border border-gray-700"
+                  className={`flex items-center justify-between p-3 rounded-lg border theme-transition ${
+                    resolvedTheme === 'dark'
+                      ? 'bg-gray-800/50 border-gray-700'
+                      : 'bg-white border-slate-200'
+                  }`}
                 >
-                  <span className="font-mono text-white">{code}</span>
+                  <span className="font-mono theme-text-primary">{code}</span>
                   <Button
                     variant="ghost"
                     size="sm"
                     onClick={() => copyCode(code)}
-                    className="h-8 w-8 p-0 text-gray-400 hover:text-white"
+                    className="h-8 w-8 p-0 theme-text-secondary hover:theme-text-primary theme-transition"
                   >
                     <Copy className="h-3 w-3" />
                   </Button>

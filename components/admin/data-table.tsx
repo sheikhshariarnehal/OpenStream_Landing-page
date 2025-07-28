@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { useTheme } from "@/contexts/theme-context"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { 
   Search, 
@@ -61,6 +62,7 @@ export function DataTable({
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc")
   const [currentPage, setCurrentPage] = useState(1)
   const itemsPerPage = 10
+  const { resolvedTheme } = useTheme()
 
   const filteredAndSortedData = useMemo(() => {
     let filtered = data.filter(item =>
@@ -118,15 +120,21 @@ export function DataTable({
 
   if (loading) {
     return (
-      <Card className="bg-gray-800/50 border-gray-700">
+      <Card className="theme-bg-card">
         <CardHeader>
-          <div className="h-6 w-48 bg-gray-700 rounded animate-pulse" />
-          <div className="h-4 w-64 bg-gray-700 rounded animate-pulse" />
+          <div className={`h-6 w-48 rounded animate-pulse ${
+            resolvedTheme === 'dark' ? 'bg-gray-700' : 'bg-slate-200'
+          }`} />
+          <div className={`h-4 w-64 rounded animate-pulse ${
+            resolvedTheme === 'dark' ? 'bg-gray-700' : 'bg-slate-200'
+          }`} />
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
             {[...Array(5)].map((_, i) => (
-              <div key={i} className="h-12 bg-gray-700 rounded animate-pulse" />
+              <div key={i} className={`h-12 rounded animate-pulse ${
+                resolvedTheme === 'dark' ? 'bg-gray-700' : 'bg-slate-200'
+              }`} />
             ))}
           </div>
         </CardContent>
@@ -135,13 +143,13 @@ export function DataTable({
   }
 
   return (
-    <Card className="bg-gray-800/50 border-gray-700">
+    <Card className="theme-bg-card theme-transition">
       <CardHeader>
         <div className="flex items-center justify-between">
           <div>
-            <CardTitle className="text-white">{title}</CardTitle>
+            <CardTitle className="theme-text-primary">{title}</CardTitle>
             {description && (
-              <p className="text-sm text-gray-400 mt-1">{description}</p>
+              <p className="text-sm theme-text-secondary mt-1">{description}</p>
             )}
           </div>
           <div className="flex items-center gap-2">
@@ -149,7 +157,7 @@ export function DataTable({
               variant="outline"
               size="sm"
               onClick={exportData}
-              className="border-gray-600 text-gray-300 hover:bg-gray-700"
+              className="theme-button-secondary theme-transition"
             >
               <Download className="h-4 w-4 mr-2" />
               Export
@@ -159,31 +167,33 @@ export function DataTable({
         
         <div className="flex items-center gap-4 mt-4">
           <div className="relative flex-1 max-w-sm">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 theme-text-muted" />
             <Input
               placeholder={searchPlaceholder}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10 bg-gray-700 border-gray-600 text-white placeholder-gray-400"
+              className="pl-10 theme-input theme-transition"
             />
           </div>
-          <Badge variant="secondary" className="bg-gray-700 text-gray-300">
+          <Badge variant="secondary" className={`${
+            resolvedTheme === 'dark' ? 'bg-gray-700 text-gray-300' : 'bg-slate-100 text-slate-700'
+          }`}>
             {filteredAndSortedData.length} items
           </Badge>
         </div>
       </CardHeader>
       
       <CardContent>
-        <div className="rounded-lg border border-gray-700 overflow-hidden">
+        <div className="rounded-lg theme-border border overflow-hidden">
           <Table>
             <TableHeader>
-              <TableRow className="border-gray-700 hover:bg-gray-800/50">
+              <TableRow className="theme-table-header theme-border theme-interactive-hover">
                 {columns.map((column) => (
-                  <TableHead 
+                  <TableHead
                     key={column.key}
                     className={cn(
-                      "text-gray-300",
-                      column.sortable && "cursor-pointer hover:text-white"
+                      "theme-text-secondary",
+                      column.sortable && "cursor-pointer hover:theme-text-primary theme-transition"
                     )}
                     onClick={() => column.sortable && handleSort(column.key)}
                   >
@@ -198,18 +208,18 @@ export function DataTable({
                   </TableHead>
                 ))}
                 {actions.length > 0 && (
-                  <TableHead className="text-gray-300 w-20">Actions</TableHead>
+                  <TableHead className="theme-text-secondary w-20">Actions</TableHead>
                 )}
               </TableRow>
             </TableHeader>
             <TableBody>
               {paginatedData.map((row, index) => (
-                <TableRow 
+                <TableRow
                   key={index}
-                  className="border-gray-700 hover:bg-gray-800/30 transition-colors"
+                  className="theme-border theme-table-row theme-transition"
                 >
                   {columns.map((column) => (
-                    <TableCell key={column.key} className="text-gray-300">
+                    <TableCell key={column.key} className="theme-text-primary">
                       {column.render ? column.render(row[column.key], row) : row[column.key]}
                     </TableCell>
                   ))}
@@ -242,7 +252,7 @@ export function DataTable({
         {/* Pagination */}
         {totalPages > 1 && (
           <div className="flex items-center justify-between mt-4">
-            <div className="text-sm text-gray-400">
+            <div className="text-sm theme-text-secondary">
               Showing {((currentPage - 1) * itemsPerPage) + 1} to {Math.min(currentPage * itemsPerPage, filteredAndSortedData.length)} of {filteredAndSortedData.length} entries
             </div>
             <div className="flex items-center gap-2">
@@ -251,7 +261,7 @@ export function DataTable({
                 size="sm"
                 onClick={() => setCurrentPage(1)}
                 disabled={currentPage === 1}
-                className="border-gray-600 text-gray-300 hover:bg-gray-700"
+                className="theme-button-secondary theme-transition"
               >
                 <ChevronsLeft className="h-4 w-4" />
               </Button>
@@ -260,11 +270,11 @@ export function DataTable({
                 size="sm"
                 onClick={() => setCurrentPage(currentPage - 1)}
                 disabled={currentPage === 1}
-                className="border-gray-600 text-gray-300 hover:bg-gray-700"
+                className="theme-button-secondary theme-transition"
               >
                 <ChevronLeft className="h-4 w-4" />
               </Button>
-              <span className="text-sm text-gray-400 px-2">
+              <span className="text-sm theme-text-secondary px-2">
                 Page {currentPage} of {totalPages}
               </span>
               <Button
@@ -272,7 +282,7 @@ export function DataTable({
                 size="sm"
                 onClick={() => setCurrentPage(currentPage + 1)}
                 disabled={currentPage === totalPages}
-                className="border-gray-600 text-gray-300 hover:bg-gray-700"
+                className="theme-button-secondary theme-transition"
               >
                 <ChevronRight className="h-4 w-4" />
               </Button>
@@ -281,7 +291,7 @@ export function DataTable({
                 size="sm"
                 onClick={() => setCurrentPage(totalPages)}
                 disabled={currentPage === totalPages}
-                className="border-gray-600 text-gray-300 hover:bg-gray-700"
+                className="theme-button-secondary theme-transition"
               >
                 <ChevronsRight className="h-4 w-4" />
               </Button>
