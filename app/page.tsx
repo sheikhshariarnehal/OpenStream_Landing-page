@@ -23,7 +23,7 @@ export default function Home() {
     setTimeout(() => {
       setDownloadLoading(false)
       setDownloadSuccess(true)
-      window.open("https://www.dropbox.com/scl/fi/4ufrqbh4u5wh6i1q9ni0k/CloudStream-4.5.4.apk?rlkey=8v9d1vxi86710iiqk1elek8ps&st=lc15nd2s&dl=1", "_blank")
+      window.open("https://openstream.sfo3.cdn.digitaloceanspaces.com/4.5.4.apk", "_blank")
 
       // Reset success state after 3 seconds
       setTimeout(() => {
