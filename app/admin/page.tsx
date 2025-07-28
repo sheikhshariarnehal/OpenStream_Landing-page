@@ -140,7 +140,7 @@ export default function AdminPage() {
 
   const authenticate = async () => {
     if (!adminToken.trim()) {
-      toast.error("Please enter admin token")
+      toast.error("Please enter admin password")
       return
     }
 
@@ -160,7 +160,7 @@ export default function AdminPage() {
         localStorage.setItem('admin-session-timestamp', Date.now().toString())
         toast.success("Authentication successful")
       } else {
-        toast.error("Invalid admin token")
+        toast.error("Invalid admin password")
       }
     } catch (error) {
       toast.error("Authentication failed")
@@ -262,12 +262,12 @@ export default function AdminPage() {
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="space-y-2">
-                <Label htmlFor="admin-token" className="theme-text-secondary">Admin Token</Label>
+                <Label htmlFor="admin-password" className="theme-text-secondary">Admin Password</Label>
                 <div className="relative">
                   <Input
-                    id="admin-token"
+                    id="admin-password"
                     type={showToken ? "text" : "password"}
-                    placeholder="Enter your admin token"
+                    placeholder="Enter your admin password"
                     value={adminToken}
                     onChange={(e) => setAdminToken(e.target.value)}
                     onKeyPress={(e) => e.key === 'Enter' && authenticate()}
