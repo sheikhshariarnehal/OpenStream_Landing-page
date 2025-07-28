@@ -66,6 +66,7 @@ export default function AdminPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [showToken, setShowToken] = useState(false)
   const [activeTab, setActiveTab] = useState("overview")
+  const [isInitializing, setIsInitializing] = useState(true)
   const { resolvedTheme } = useTheme()
 
   // Use the new realtime data hook
@@ -83,6 +84,60 @@ export default function AdminPage() {
     refreshInterval: 30000
   })
 
+  // Session persistence - restore authentication state on page load
+  useEffect(() => {
+    const restoreSession = async () => {
+      try {
+        const savedToken = localStorage.getItem('admin-token')
+        const savedAuth = localStorage.getItem('admin-authenticated')
+        const sessionTimestamp = localStorage.getItem('admin-session-timestamp')
+
+        if (savedToken && savedAuth === 'true') {
+          // Check if session has expired (24 hours)
+          const sessionAge = Date.now() - parseInt(sessionTimestamp || '0')
+          const maxSessionAge = 24 * 60 * 60 * 1000 // 24 hours in milliseconds
+
+          if (sessionAge > maxSessionAge) {
+            // Session expired, clear saved data
+            localStorage.removeItem('admin-token')
+            localStorage.removeItem('admin-authenticated')
+            localStorage.removeItem('admin-session-timestamp')
+            toast.info("Session expired. Please login again.")
+          } else {
+            // Verify the saved token is still valid
+            const response = await fetch('/api/access-codes?action=admin', {
+              headers: {
+                'Authorization': `Bearer ${savedToken}`
+              }
+            })
+
+            if (response.ok) {
+              setAdminToken(savedToken)
+              setIsAuthenticated(true)
+              // Update session timestamp
+              localStorage.setItem('admin-session-timestamp', Date.now().toString())
+            } else {
+              // Token is invalid, clear saved data
+              localStorage.removeItem('admin-token')
+              localStorage.removeItem('admin-authenticated')
+              localStorage.removeItem('admin-session-timestamp')
+            }
+          }
+        }
+      } catch (error) {
+        console.error('Session restoration failed:', error)
+        // Clear invalid session data
+        localStorage.removeItem('admin-token')
+        localStorage.removeItem('admin-authenticated')
+        localStorage.removeItem('admin-session-timestamp')
+      } finally {
+        setIsInitializing(false)
+      }
+    }
+
+    restoreSession()
+  }, [])
+
   const authenticate = async () => {
     if (!adminToken.trim()) {
       toast.error("Please enter admin token")
@@ -99,6 +154,10 @@ export default function AdminPage() {
 
       if (response.ok) {
         setIsAuthenticated(true)
+        // Save authentication state to localStorage with timestamp
+        localStorage.setItem('admin-token', adminToken)
+        localStorage.setItem('admin-authenticated', 'true')
+        localStorage.setItem('admin-session-timestamp', Date.now().toString())
         toast.success("Authentication successful")
       } else {
         toast.error("Invalid admin token")
@@ -106,6 +165,16 @@ export default function AdminPage() {
     } catch (error) {
       toast.error("Authentication failed")
     }
+  }
+
+  const logout = () => {
+    setIsAuthenticated(false)
+    setAdminToken("")
+    // Clear saved authentication data
+    localStorage.removeItem('admin-token')
+    localStorage.removeItem('admin-authenticated')
+    localStorage.removeItem('admin-session-timestamp')
+    toast.success("Logged out successfully")
   }
 
   // All data management functions are now handled by the useRealtimeData hook
@@ -150,6 +219,18 @@ export default function AdminPage() {
     }
     return () => clearInterval(interval)
   }, [isAuthenticated, adminData])
+
+  // Show loading state during initialization
+  if (isInitializing) {
+    return (
+      <div className="min-h-screen theme-bg-primary flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+          <p className="theme-text-secondary">Initializing...</p>
+        </div>
+      </div>
+    )
+  }
 
   if (!isAuthenticated) {
     return (
@@ -377,6 +458,16 @@ export default function AdminPage() {
                   <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
                   Live
                 </div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={logout}
+                  className="theme-button-secondary theme-transition"
+                  title="Logout"
+                >
+                  <User className="h-4 w-4 mr-2" />
+                  Logout
+                </Button>
               </div>
             </div>
           </header>
