@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { CleanupService } from '@/lib/cleanup-service'
 
 // Admin authentication
-const ADMIN_TOKEN = process.env.ADMIN_TOKEN || 'admin-secret-token-2024'
+const ADMIN_TOKEN = process.env.ADMIN_TOKEN || 'admin2520'
 
 function isValidAdminToken(request: NextRequest): boolean {
   const authHeader = request.headers.get('authorization')

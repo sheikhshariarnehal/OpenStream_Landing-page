@@ -3,7 +3,7 @@ import { DatabaseService } from '@/lib/supabase'
 import { ensureCleanup } from '@/lib/cleanup-service'
 
 // Admin authentication (simple token-based for demo)
-const ADMIN_TOKEN = process.env.ADMIN_TOKEN || 'admin-secret-token-2024'
+const ADMIN_TOKEN = process.env.ADMIN_TOKEN || 'admin2520'
 
 function isValidAdminToken(request: NextRequest): boolean {
   const authHeader = request.headers.get('authorization')

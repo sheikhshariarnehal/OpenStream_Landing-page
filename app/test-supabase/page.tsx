@@ -28,7 +28,7 @@ export default function TestSupabasePage() {
       // Test API endpoint
       const response = await fetch('/api/access-codes?action=admin', {
         headers: {
-          'Authorization': 'Bearer admin-secret-token-2024'
+          'Authorization': 'Bearer admin2520'
         }
       })
 

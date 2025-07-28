@@ -10,7 +10,7 @@
  */
 
 const BASE_URL = 'http://localhost:3000'
-const ADMIN_TOKEN = 'admin-secret-token-2024'
+const ADMIN_TOKEN = 'admin2520'
 
 async function makeRequest(url, options = {}) {
   try {
