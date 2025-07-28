@@ -285,17 +285,6 @@ export default function AdminPage() {
                 </div>
               </div>
 
-              <Alert className="theme-status-info theme-transition">
-                <AlertCircle className="h-4 w-4" />
-                <AlertDescription>
-                  Demo token: <code className={`px-2 py-1 rounded font-mono ${
-                    resolvedTheme === 'dark'
-                      ? 'bg-blue-800/30 text-blue-300'
-                      : 'bg-blue-100 text-blue-700'
-                  }`}>admin-secret-token-2024</code>
-                </AlertDescription>
-              </Alert>
-
               <Button
                 onClick={authenticate}
                 disabled={loading || !adminToken.trim()}
