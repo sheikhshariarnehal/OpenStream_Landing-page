@@ -17,7 +17,6 @@ import {
   Shield,
   Plus,
   Trash2,
-  RefreshCw,
   Clock,
   Users,
   Activity,
@@ -360,16 +359,6 @@ export default function AdminPage() {
                 </p>
               </div>
               <div className="flex items-center gap-3">
-                <Button
-                  onClick={() => refreshData(true)}
-                  disabled={loading}
-                  variant="outline"
-                  size="sm"
-                  className="border-gray-600 text-gray-300 hover:bg-gray-700"
-                >
-                  <RefreshCw className={`h-4 w-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
-                  Refresh
-                </Button>
                 <div className="flex items-center gap-2 text-sm text-gray-400">
                   <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
                   Live
